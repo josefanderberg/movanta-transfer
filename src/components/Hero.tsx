@@ -74,7 +74,8 @@ export function Hero() {
 
           <Reveal delay={200}>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="#waitlist">{brand.waitlistCta}</ButtonLink>
+              <ButtonLink href={withBasePath("/app")}>{t("Try the app demo", "Testa appen (demo)")}</ButtonLink>
+              <ButtonLink href="#waitlist" variant="secondary">{brand.waitlistCta}</ButtonLink>
               <ButtonLink href="#private" variant="secondary">
                 {t("List your vehicle", "Lista ditt fordon")}
               </ButtonLink>
