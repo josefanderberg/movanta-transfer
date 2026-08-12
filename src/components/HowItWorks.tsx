@@ -22,13 +22,13 @@ export function HowItWorks() {
 
         <div className="relative mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div
-            className="pointer-events-none absolute left-0 right-0 top-[2.1rem] hidden h-px bg-white/10 lg:block"
+            className="pointer-events-none absolute left-0 right-0 top-[2.1rem] hidden h-px bg-ink/10 lg:block"
             aria-hidden
           />
 
           {howItWorksSteps.map((step, i) => (
             <Reveal key={step.number} delay={i * 90} className="relative flex flex-col gap-4">
-              <div className="relative z-10 flex h-[4.2rem] w-[4.2rem] items-center justify-center rounded-2xl border border-white/10 bg-card text-lg font-semibold text-yellow">
+              <div className="relative z-10 flex h-[4.2rem] w-[4.2rem] items-center justify-center rounded-2xl border border-ink/10 bg-card text-lg font-semibold text-yellow">
                 {step.number}
               </div>
               <h3 className="text-lg font-semibold text-text-primary">{step.title}</h3>

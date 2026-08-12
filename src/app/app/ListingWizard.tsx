@@ -97,7 +97,7 @@ function PhotoUploadGrid({
         onDrop={(e) => { e.preventDefault(); setDragOver(false); onFilesSelected(e.dataTransfer.files); }}
         onClick={() => fileInputRef.current?.click()}
         className={`flex cursor-pointer flex-col items-center gap-1.5 rounded-xl border-2 border-dashed p-5 text-center transition-colors ${
-          dragOver ? "border-yellow bg-yellow/5" : "border-white/15 hover:border-white/30"
+          dragOver ? "border-yellow bg-yellow/5" : "border-ink/15 hover:border-ink/30"
         }`}
       >
         <Icon name="camera" className="h-6 w-6 text-text-muted" />
@@ -128,7 +128,7 @@ function PhotoUploadGrid({
       {photos.length > 0 && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {photos.map((p, i) => (
-            <div key={i} className="relative overflow-hidden rounded-xl border border-white/10">
+            <div key={i} className="relative overflow-hidden rounded-xl border border-ink/10">
               {/* eslint-disable-next-line @next/next/no-img-element -- local data: URL photos */}
               <img src={p} alt="" className="h-28 w-full object-cover" />
               {showCover && i === 0 && (
@@ -151,7 +151,7 @@ function PhotoUploadGrid({
   );
 }
 
-const inputClass = "mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none";
+const inputClass = "mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none";
 const priceInputClass = `${inputClass} [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none`;
 
 export function ListingWizard({
@@ -408,13 +408,13 @@ export function ListingWizard({
               type="button"
               onClick={() => setStep(i + 1)}
               className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
-                i + 1 === step ? "bg-yellow text-[#08090A]" : i + 1 < step ? "bg-yellow/20 text-yellow" : "bg-white/10 text-text-muted"
+                i + 1 === step ? "bg-yellow text-[#08090A]" : i + 1 < step ? "bg-yellow/20 text-yellow" : "bg-ink/10 text-text-muted"
               }`}
             >
               {i + 1}
             </button>
             <span className={`hidden text-xs sm:inline ${i + 1 === step ? "text-text-primary" : "text-text-muted"}`}>{label}</span>
-            {i < stepLabels.length - 1 && <div className="h-px w-4 bg-white/10 sm:w-6" />}
+            {i < stepLabels.length - 1 && <div className="h-px w-4 bg-ink/10 sm:w-6" />}
           </div>
         ))}
       </div>
@@ -422,7 +422,7 @@ export function ListingWizard({
       {error && <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</div>}
 
       {step === 1 && (
-        <div className="space-y-4 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="space-y-4 rounded-2xl border border-ink/10 bg-card p-5">
           <h2 className="text-base font-semibold text-text-primary">{t("What kind of vehicle is it?", "Vilken typ av fordon är det?")}</h2>
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
             {TYPE_OPTIONS.map((ty) => (
@@ -431,7 +431,7 @@ export function ListingWizard({
                 type="button"
                 onClick={() => patch({ type: ty })}
                 className={`flex flex-col items-center gap-2 rounded-xl border p-4 text-xs font-medium transition-colors ${
-                  draft.type === ty ? "border-yellow bg-yellow/10 text-yellow" : "border-white/10 bg-white/[0.03] text-text-secondary hover:border-white/25"
+                  draft.type === ty ? "border-yellow bg-yellow/10 text-yellow" : "border-ink/10 bg-ink/[0.03] text-text-secondary hover:border-ink/25"
                 }`}
               >
                 <Icon name={vehicleIcon(ty)} className="h-6 w-6" />
@@ -443,7 +443,7 @@ export function ListingWizard({
       )}
 
       {step === 2 && (
-        <div className="space-y-4 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="space-y-4 rounded-2xl border border-ink/10 bg-card p-5">
           <h2 className="text-base font-semibold text-text-primary">{t("Vehicle details", "Fordonsdetaljer")}</h2>
 
           <div>
@@ -453,7 +453,7 @@ export function ListingWizard({
                 type="button"
                 onClick={() => patch({ identityType: "Privat", companyId: null })}
                 className={`rounded-xl border p-3 text-left text-sm font-medium transition-colors ${
-                  draft.identityType === "Privat" ? "border-yellow bg-yellow/10 text-yellow" : "border-white/10 bg-white/[0.03] text-text-secondary hover:border-white/25"
+                  draft.identityType === "Privat" ? "border-yellow bg-yellow/10 text-yellow" : "border-ink/10 bg-ink/[0.03] text-text-secondary hover:border-ink/25"
                 }`}
               >
                 {t("As a private individual", "Som privatperson")}
@@ -462,7 +462,7 @@ export function ListingWizard({
                 type="button"
                 onClick={() => patch({ identityType: "Företag", companyId: draft.ownerId })}
                 className={`rounded-xl border p-3 text-left text-sm font-medium transition-colors ${
-                  draft.identityType === "Företag" ? "border-yellow bg-yellow/10 text-yellow" : "border-white/10 bg-white/[0.03] text-text-secondary hover:border-white/25"
+                  draft.identityType === "Företag" ? "border-yellow bg-yellow/10 text-yellow" : "border-ink/10 bg-ink/[0.03] text-text-secondary hover:border-ink/25"
                 }`}
               >
                 {t("On behalf of a company", "Som företag")}
@@ -535,14 +535,14 @@ export function ListingWizard({
                 placeholder={t("e.g. Tow bar — press Enter", "t.ex. Dragkrok — tryck Enter")}
                 className={inputClass}
               />
-              <button type="button" onClick={addFeature} className="mt-1 shrink-0 rounded-lg border border-white/15 bg-white/[0.03] px-3.5 text-sm text-text-primary hover:border-white/25">
+              <button type="button" onClick={addFeature} className="mt-1 shrink-0 rounded-lg border border-ink/15 bg-ink/[0.03] px-3.5 text-sm text-text-primary hover:border-ink/25">
                 <Icon name="plus" className="h-4 w-4" />
               </button>
             </div>
             {draft.features.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {draft.features.map((f) => (
-                  <span key={f} className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-text-secondary">
+                  <span key={f} className="flex items-center gap-1.5 rounded-full border border-ink/10 bg-ink/[0.03] px-3 py-1 text-xs text-text-secondary">
                     {f}
                     <button type="button" onClick={() => removeFeature(f)} aria-label={t("Remove", "Ta bort")}><Icon name="close" className="h-3 w-3" /></button>
                   </span>
@@ -554,7 +554,7 @@ export function ListingWizard({
       )}
 
       {step === 3 && (
-        <div className="space-y-6 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="space-y-6 rounded-2xl border border-ink/10 bg-card p-5">
           <div>
             <h2 className="text-base font-semibold text-text-primary">{t("Photos", "Foton")}</h2>
             <p className="text-xs text-text-muted">{t("Shown to renters browsing the Explore page, before they book. No file storage service is connected in this prototype — photos are compressed and kept on this device only.", "Visas för hyresgäster som bläddrar på Utforska-sidan, innan de bokar. Ingen fillagringstjänst är kopplad i denna prototyp — foton komprimeras och sparas endast på den här enheten.")}</p>
@@ -587,7 +587,7 @@ export function ListingWizard({
       )}
 
       {step === 4 && (
-        <div className="space-y-6 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="space-y-6 rounded-2xl border border-ink/10 bg-card p-5">
           <div>
             <h2 className="text-base font-semibold text-text-primary">{t("Documentation", "Dokumentation")}</h2>
             <p className="text-xs text-text-muted">
@@ -648,7 +648,7 @@ export function ListingWizard({
       )}
 
       {step === 5 && (
-        <div className="space-y-4 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="space-y-4 rounded-2xl border border-ink/10 bg-card p-5">
           <h2 className="text-base font-semibold text-text-primary">{t("Price and availability", "Pris och tillgänglighet")}</h2>
           <div className="grid grid-cols-2 gap-3">
             <Field label={t("Price per hour (optional)", "Pris per timme (valfritt)")}><input type="number" min={0} value={draft.pricePerHour ?? ""} onChange={(e) => patch({ pricePerHour: e.target.value ? Number(e.target.value) : null })} className={priceInputClass} /></Field>
@@ -669,7 +669,7 @@ export function ListingWizard({
           </div>
 
           {marketComparison.count > 0 && (
-            <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="rounded-xl border border-ink/10 bg-ink/[0.02] p-4">
               <p className="text-xs font-medium text-text-primary">{t("Market-based price recommendation", "Marknadsbaserad prisrekommendation")}</p>
               <p className="mt-1 text-[11px] text-text-muted">
                 {t("Based on", "Baserat på")} {marketComparison.count} {t("comparable listings", "jämförbara annonser")} ({tierLabel(marketComparison.tier, lang)})
@@ -723,7 +723,7 @@ export function ListingWizard({
                 type="button"
                 onClick={locateOnMap}
                 disabled={geoStatus === "loading"}
-                className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary transition-colors hover:border-yellow/40 hover:text-yellow disabled:opacity-60"
+                className="flex items-center gap-1.5 rounded-full border border-ink/15 bg-ink/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary transition-colors hover:border-yellow/40 hover:text-yellow disabled:opacity-60"
               >
                 <Icon name="pin" className="h-3.5 w-3.5" />
                 {t("Locate on map", "Hitta på karta")}
@@ -774,7 +774,7 @@ export function ListingWizard({
             </button>
 
             {showAdvancedPricing && (
-              <div className="mt-3 space-y-3 border-t border-white/10 pt-3">
+              <div className="mt-3 space-y-3 border-t border-ink/10 pt-3">
                 {(draft.fuel === "Bensin" || draft.fuel === "Diesel" || draft.fuel === "Hybrid" || draft.fuel === "Laddhybrid") && (
                   <Field label={t("Fuel consumption (L/100km)", "Bränsleförbrukning (L/100km)")}>
                     <input type="number" min={0} step={0.1} value={draft.fuelConsumptionPer100Km ?? ""} onChange={(e) => patch({ fuelConsumptionPer100Km: e.target.value ? Number(e.target.value) : null })} className={inputClass} />
@@ -820,14 +820,14 @@ export function ListingWizard({
               </div>
             )}
 
-            <div className="mt-4 border-t border-white/10 pt-3">
+            <div className="mt-4 border-t border-ink/10 pt-3">
               <p className="text-xs font-medium text-text-primary">{t("Insurance option", "Försäkringsalternativ")}</p>
               <div className="mt-1.5 grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
                   onClick={() => { patch({ insuranceOption: "Skydd" }); setInsuranceAck(false); }}
                   className={`rounded-xl border p-3 text-left text-sm font-medium transition-colors ${
-                    draft.insuranceOption === "Skydd" ? "border-yellow bg-yellow/10 text-yellow" : "border-white/10 bg-white/[0.03] text-text-secondary hover:border-white/25"
+                    draft.insuranceOption === "Skydd" ? "border-yellow bg-yellow/10 text-yellow" : "border-ink/10 bg-ink/[0.03] text-text-secondary hover:border-ink/25"
                   }`}
                 >
                   {t("Insurance protection", "Försäkringsskydd")}
@@ -836,7 +836,7 @@ export function ListingWizard({
                   type="button"
                   onClick={() => patch({ insuranceOption: "Inget" })}
                   className={`rounded-xl border p-3 text-left text-sm font-medium transition-colors ${
-                    draft.insuranceOption === "Inget" ? "border-yellow bg-yellow/10 text-yellow" : "border-white/10 bg-white/[0.03] text-text-secondary hover:border-white/25"
+                    draft.insuranceOption === "Inget" ? "border-yellow bg-yellow/10 text-yellow" : "border-ink/10 bg-ink/[0.03] text-text-secondary hover:border-ink/25"
                   }`}
                 >
                   {t("No additional protection", "Inget ytterligare skydd")}
@@ -860,7 +860,7 @@ export function ListingWizard({
               )}
             </div>
 
-            <div className="mt-4 space-y-1.5 border-t border-white/10 pt-3 text-sm">
+            <div className="mt-4 space-y-1.5 border-t border-ink/10 pt-3 text-sm">
               <div className="flex justify-between text-text-secondary"><span>{t("Gross revenue / day", "Bruttointäkt / dag")}</span><span className="text-text-primary">{formatSEKRounded(profit.grossRevenuePerDay)}</span></div>
               <div className="flex justify-between text-text-secondary"><span>{t("Gross revenue, 7 days", "Bruttointäkt, 7 dagar")}</span><span className="text-text-primary">{formatSEKRounded(profit.grossRevenueForPeriod)}</span></div>
               <div className="flex justify-between text-text-secondary"><span>{t("Energy cost / 100km", "Energikostnad / 100km")}</span><span className="text-text-primary">{formatSEKPrecise(profit.energyCostPer100Km)}</span></div>
@@ -868,7 +868,7 @@ export function ListingWizard({
               <div className="flex justify-between text-text-secondary"><span>{t("Insurance fee", "Försäkringsavgift")}</span><span className="text-text-primary">{formatSEKRounded(profit.insuranceFee)}</span></div>
               <div className="flex justify-between text-text-secondary"><span>{t("Platform fee", "Plattformsavgift")} ({DEFAULT_PLATFORM_FEE_PERCENT}%)</span><span className="text-text-primary">{formatSEKRounded(profit.platformFee)}</span></div>
               <div className="flex justify-between text-text-secondary"><span>{t("Other expenses", "Övriga kostnader")}</span><span className="text-text-primary">{formatSEKRounded(profit.otherExpenses)}</span></div>
-              <div className="flex justify-between border-t border-white/10 pt-2 text-base font-semibold text-text-primary">
+              <div className="flex justify-between border-t border-ink/10 pt-2 text-base font-semibold text-text-primary">
                 <span>{t("Estimated owner earnings", "Uppskattad intäkt för ägaren")}</span>
                 <span>{formatSEKRounded(profit.ownerEarnings)}</span>
               </div>
@@ -879,7 +879,7 @@ export function ListingWizard({
       )}
 
       {step === 6 && (
-        <div className="space-y-4 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="space-y-4 rounded-2xl border border-ink/10 bg-card p-5">
           <h2 className="text-base font-semibold text-text-primary">{t("Rental rules", "Uthyrningsregler")}</h2>
           <div className="grid grid-cols-2 gap-3">
             <Field label={t("Minimum renter age", "Lägsta ålder för hyresgäst")}><input type="number" min={18} value={draft.minRenterAge} onChange={(e) => patch({ minRenterAge: Number(e.target.value) })} className={inputClass} /></Field>
@@ -926,7 +926,7 @@ export function ListingWizard({
               {reviewExpanded ? t("Hide detailed breakdown", "Dölj detaljerad uppdelning") : t("Show detailed breakdown", "Visa detaljerad uppdelning")}
             </button>
             {reviewExpanded && (
-              <div className="mt-3 space-y-1.5 border-t border-white/10 pt-3 text-left text-sm">
+              <div className="mt-3 space-y-1.5 border-t border-ink/10 pt-3 text-left text-sm">
                 <div className="flex justify-between text-text-secondary"><span>{t("Daily rental price", "Dagspris")}</span><span className="text-text-primary">{formatSEKRounded(draft.pricePerDay)}</span></div>
                 <div className="flex justify-between text-text-secondary"><span>{t("Expected booked days", "Förväntade bokade dagar")}</span><span className="text-text-primary">{draft.expectedBookedDays}</span></div>
                 <div className="flex justify-between text-text-secondary"><span>{t("Gross earnings", "Bruttointäkt")}</span><span className="text-text-primary">{formatSEKRounded(profit.grossRevenueForPeriod)}</span></div>
@@ -934,7 +934,7 @@ export function ListingWizard({
                 <div className="flex justify-between text-text-secondary"><span>{t("Insurance fees", "Försäkringsavgifter")}</span><span className="text-text-primary">−{formatSEKRounded(profit.insuranceFee)}</span></div>
                 <div className="flex justify-between text-text-secondary"><span>{t("Platform fees", "Plattformsavgifter")}</span><span className="text-text-primary">−{formatSEKRounded(profit.platformFee)}</span></div>
                 <div className="flex justify-between text-text-secondary"><span>{t("Other entered expenses", "Övriga angivna kostnader")}</span><span className="text-text-primary">−{formatSEKRounded(profit.otherExpenses)}</span></div>
-                <div className="flex justify-between border-t border-white/10 pt-2 text-base font-semibold text-text-primary">
+                <div className="flex justify-between border-t border-ink/10 pt-2 text-base font-semibold text-text-primary">
                   <span>{t("Estimated earnings after included expenses", "Uppskattad intäkt efter inkluderade kostnader")}</span>
                   <span>{formatSEKRounded(profit.ownerEarnings)}</span>
                 </div>
@@ -942,12 +942,12 @@ export function ListingWizard({
             )}
           </div>
 
-          <div className="space-y-4 rounded-2xl border border-white/10 bg-card p-5">
+          <div className="space-y-4 rounded-2xl border border-ink/10 bg-card p-5">
             <h2 className="text-base font-semibold text-text-primary">{t("Review your listing", "Granska din annons")}</h2>
 
             {(draft.exteriorPhotos[0] ?? draft.interiorPhotos[0]) && (
               // eslint-disable-next-line @next/next/no-img-element -- local data: URL photo
-              <img src={draft.exteriorPhotos[0] ?? draft.interiorPhotos[0]} alt="" className="h-40 w-full rounded-xl border border-white/10 object-cover" />
+              <img src={draft.exteriorPhotos[0] ?? draft.interiorPhotos[0]} alt="" className="h-40 w-full rounded-xl border border-ink/10 object-cover" />
             )}
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm">
@@ -969,16 +969,16 @@ export function ListingWizard({
               <p className="text-text-muted">{t("Documentation photos", "Dokumentationsfoton")}</p><p className="text-text-primary">{draft.conditionPhotos.length + draft.damagePhotos.length + draft.includedItemsPhotos.length + draft.documentPhotos.length}</p>
             </div>
 
-            <div className="flex flex-wrap gap-2 border-t border-white/10 pt-3">
+            <div className="flex flex-wrap gap-2 border-t border-ink/10 pt-3">
               {[1, 2, 3, 4, 5, 6].map((s) => (
-                <button key={s} type="button" onClick={() => setStep(s)} className="rounded-full border border-white/15 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-text-primary hover:border-white/25">
+                <button key={s} type="button" onClick={() => setStep(s)} className="rounded-full border border-ink/15 bg-ink/[0.03] px-3 py-1.5 text-xs font-medium text-text-primary hover:border-ink/25">
                   {t("Edit", "Redigera")} {stepLabels[s - 1]}
                 </button>
               ))}
             </div>
 
-            <div className="flex flex-col gap-3 border-t border-white/10 pt-4 sm:flex-row">
-              <button type="button" onClick={handleSaveDraft} disabled={publishing} className="flex-1 rounded-full border border-white/15 bg-white/[0.03] py-3 text-sm font-medium text-text-primary hover:border-white/25 disabled:opacity-60">
+            <div className="flex flex-col gap-3 border-t border-ink/10 pt-4 sm:flex-row">
+              <button type="button" onClick={handleSaveDraft} disabled={publishing} className="flex-1 rounded-full border border-ink/15 bg-ink/[0.03] py-3 text-sm font-medium text-text-primary hover:border-ink/25 disabled:opacity-60">
                 {t("Save as draft", "Spara som utkast")}
               </button>
               <button type="button" onClick={handlePublish} disabled={publishing} className="flex-1 rounded-full bg-yellow py-3 text-sm font-semibold text-[#08090A] transition-transform hover:-translate-y-0.5 disabled:opacity-60">
@@ -991,10 +991,10 @@ export function ListingWizard({
 
       {step < 7 && (
         <div className="mt-5 flex gap-3">
-          <button type="button" onClick={back} className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.03] px-5 py-3 text-sm font-medium text-text-primary hover:border-white/25">
+          <button type="button" onClick={back} className="flex items-center gap-1.5 rounded-full border border-ink/15 bg-ink/[0.03] px-5 py-3 text-sm font-medium text-text-primary hover:border-ink/25">
             <Icon name="chevronLeft" className="h-4 w-4" />{t("Back", "Tillbaka")}
           </button>
-          <button type="button" onClick={handleSaveDraft} className="rounded-full border border-white/15 bg-white/[0.03] px-5 py-3 text-sm font-medium text-text-primary hover:border-white/25">
+          <button type="button" onClick={handleSaveDraft} className="rounded-full border border-ink/15 bg-ink/[0.03] px-5 py-3 text-sm font-medium text-text-primary hover:border-ink/25">
             {t("Save as draft", "Spara utkast")}
           </button>
           <button type="button" onClick={next} className="flex-1 rounded-full bg-yellow py-3 text-sm font-semibold text-[#08090A] transition-transform hover:-translate-y-0.5">

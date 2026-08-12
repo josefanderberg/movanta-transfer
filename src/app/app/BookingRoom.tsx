@@ -19,9 +19,9 @@ function SignatureRow({
   const { lang, t } = useLanguage();
   const signed = !!signedAt;
   return (
-    <div className={`flex items-center justify-between gap-3 rounded-xl border p-3.5 ${signed ? "border-emerald-500/30 bg-emerald-500/5" : "border-white/10 bg-white/[0.03]"}`}>
+    <div className={`flex items-center justify-between gap-3 rounded-xl border p-3.5 ${signed ? "border-emerald-500/30 bg-emerald-500/5" : "border-ink/10 bg-ink/[0.03]"}`}>
       <div className="flex items-center gap-3">
-        <span className={`flex h-9 w-9 items-center justify-center rounded-full ${signed ? "bg-emerald-500/15 text-emerald-300" : "bg-white/[0.06] text-text-muted"}`}>
+        <span className={`flex h-9 w-9 items-center justify-center rounded-full ${signed ? "bg-emerald-500/15 text-emerald-300" : "bg-ink/[0.06] text-text-muted"}`}>
           <Icon name={signed ? "check" : "signature"} className="h-4 w-4" />
         </span>
         <div>
@@ -115,7 +115,7 @@ function ConditionReportSection({
   if (!editing) {
     if (!report) {
       return (
-        <div className="mt-4 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="mt-4 rounded-2xl border border-ink/10 bg-card p-5">
           <h2 className="text-sm font-semibold text-text-primary">{t("Vehicle condition before rental", "Fordonets skick före uthyrning")}</h2>
           <p className="mt-2 rounded-xl border border-yellow/20 bg-yellow/[0.04] p-3.5 text-xs text-text-secondary">
             {isOwner
@@ -134,7 +134,7 @@ function ConditionReportSection({
       );
     }
     return (
-      <div className="mt-4 rounded-2xl border border-white/10 bg-card p-5">
+      <div className="mt-4 rounded-2xl border border-ink/10 bg-card p-5">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-text-primary">{t("Vehicle condition before rental", "Fordonets skick före uthyrning")}</h2>
           {isOwner && (
@@ -150,7 +150,7 @@ function ConditionReportSection({
           <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4">
             {report.photos.map((p, i) => (
               // eslint-disable-next-line @next/next/no-img-element -- local data: URL photos
-              <img key={i} src={p} alt="" className="h-20 w-full rounded-lg border border-white/10 object-cover" />
+              <img key={i} src={p} alt="" className="h-20 w-full rounded-lg border border-ink/10 object-cover" />
             ))}
           </div>
         )}
@@ -169,7 +169,7 @@ function ConditionReportSection({
   }
 
   return (
-    <div className="mt-4 rounded-2xl border border-white/10 bg-card p-5">
+    <div className="mt-4 rounded-2xl border border-ink/10 bg-card p-5">
       <h2 className="text-sm font-semibold text-text-primary">{t("Vehicle condition before rental", "Fordonets skick före uthyrning")}</h2>
       <p className="mt-1 text-xs text-text-muted">
         {t(
@@ -184,7 +184,7 @@ function ConditionReportSection({
         onDrop={(e) => { e.preventDefault(); setDragOver(false); handleFiles(e.dataTransfer.files); }}
         onClick={() => fileInputRef.current?.click()}
         className={`mt-3 flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed p-6 text-center transition-colors ${
-          dragOver ? "border-yellow bg-yellow/5" : "border-white/15 hover:border-white/30"
+          dragOver ? "border-yellow bg-yellow/5" : "border-ink/15 hover:border-ink/30"
         }`}
       >
         <Icon name="camera" className="h-6 w-6 text-text-muted" />
@@ -215,7 +215,7 @@ function ConditionReportSection({
       {photos.length > 0 && (
         <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4">
           {photos.map((p, i) => (
-            <div key={i} className="relative overflow-hidden rounded-lg border border-white/10">
+            <div key={i} className="relative overflow-hidden rounded-lg border border-ink/10">
               {/* eslint-disable-next-line @next/next/no-img-element -- local data: URL photos */}
               <img src={p} alt="" className="h-20 w-full object-cover" />
               <button
@@ -239,7 +239,7 @@ function ConditionReportSection({
             min={0}
             value={mileage}
             onChange={(e) => setMileage(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none"
+            className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none"
           />
         </label>
       </div>
@@ -250,7 +250,7 @@ function ConditionReportSection({
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder={t("e.g. Small scratch on rear bumper, minor stone chip on windshield", "t.ex. Litet repa på bakre stötfångare, mindre stenskott i vindrutan")}
-          className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none"
+          className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none"
         />
       </label>
 
@@ -259,7 +259,7 @@ function ConditionReportSection({
           <button
             type="button"
             onClick={() => { setEditing(false); setErrors([]); setPhotos(report.photos); setMileage(report.mileage != null ? String(report.mileage) : ""); setNotes(report.notes); }}
-            className="rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-xs font-medium text-text-primary hover:border-white/25"
+            className="rounded-full border border-ink/15 bg-ink/[0.03] px-4 py-2 text-xs font-medium text-text-primary hover:border-ink/25"
           >
             {t("Cancel", "Avbryt")}
           </button>
@@ -319,7 +319,7 @@ export function BookingRoomView({
       <h1 className="text-xl font-semibold text-text-primary">{t("Rental agreement", "Hyresavtal")}</h1>
       <p className="mt-1 text-sm text-text-muted">{booking.bookingNumber}</p>
 
-      <div className="mt-4 rounded-2xl border border-white/10 bg-card p-5">
+      <div className="mt-4 rounded-2xl border border-ink/10 bg-card p-5">
         <h2 className="text-sm font-semibold text-text-primary">
           {vehicle ? `${vehicle.brand} ${vehicle.model}` : t("Vehicle", "Fordon")}
         </h2>
@@ -332,7 +332,7 @@ export function BookingRoomView({
           <div><p className="text-text-muted">{t("Pickup location", "Upphämtningsplats")}</p><p className="text-text-primary">{vehicle?.location ?? "—"}</p></div>
         </div>
 
-        <div className="mt-4 space-y-2 border-t border-white/10 pt-4 text-xs leading-relaxed text-text-secondary">
+        <div className="mt-4 space-y-2 border-t border-ink/10 pt-4 text-xs leading-relaxed text-text-secondary">
           <p>
             {t(
               `This prototype agreement is between ${renterName} ("the renter") and ${ownerName} ("the owner") for the rental of the vehicle and dates above via Movanta.`,
@@ -352,7 +352,7 @@ export function BookingRoomView({
           </p>
         </div>
 
-        <div className="mt-4 space-y-2.5 border-t border-white/10 pt-4">
+        <div className="mt-4 space-y-2.5 border-t border-ink/10 pt-4">
           {!conditionReportReady && !bothSigned && (
             <div className="rounded-xl border border-yellow/20 bg-yellow/[0.04] p-3 text-xs text-text-secondary">
               {t(
@@ -406,19 +406,19 @@ export function BookingRoomView({
         <ConditionReportSection report={booking.conditionReport} isOwner={isOwner} onSave={onSaveConditionReport} />
       ) : null}
 
-      <div className="mt-4 rounded-2xl border border-white/10 bg-card p-5">
+      <div className="mt-4 rounded-2xl border border-ink/10 bg-card p-5">
         <h2 className="flex items-center gap-2 text-sm font-semibold text-text-primary">
           <Icon name="chat" className="h-4 w-4 text-yellow" />
           {t("Chat", "Chatt")}
         </h2>
 
         {!bothSigned ? (
-          <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-center text-sm text-text-muted">
+          <div className="mt-3 rounded-xl border border-ink/10 bg-ink/[0.03] p-4 text-center text-sm text-text-muted">
             {t("Chat unlocks once both parties have signed the agreement above.", "Chatten låses upp när båda parter har signerat avtalet ovan.")}
           </div>
         ) : (
           <>
-            <div ref={scrollRef} className="mt-3 max-h-80 space-y-2.5 overflow-y-auto rounded-xl border border-white/10 bg-white/[0.02] p-3">
+            <div ref={scrollRef} className="mt-3 max-h-80 space-y-2.5 overflow-y-auto rounded-xl border border-ink/10 bg-ink/[0.02] p-3">
               {messages.length === 0 ? (
                 <p className="p-4 text-center text-sm text-text-muted">{t("No messages yet — say hello.", "Inga meddelanden än — säg hej.")}</p>
               ) : (
@@ -426,7 +426,7 @@ export function BookingRoomView({
                   const mine = m.senderId === currentUser.id;
                   return (
                     <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                      <div className={`max-w-[75%] rounded-2xl px-3.5 py-2 text-sm ${mine ? "bg-yellow text-[#08090A]" : "bg-white/[0.06] text-text-primary"}`}>
+                      <div className={`max-w-[75%] rounded-2xl px-3.5 py-2 text-sm ${mine ? "bg-yellow text-[#08090A]" : "bg-ink/[0.06] text-text-primary"}`}>
                         <p>{m.text}</p>
                         <p className={`mt-1 text-[10px] ${mine ? "text-[#08090A]/60" : "text-text-muted"}`}>
                           {new Date(m.createdAt).toLocaleTimeString(lang === "sv" ? "sv-SE" : "en-GB", { hour: "2-digit", minute: "2-digit" })}
@@ -443,7 +443,7 @@ export function BookingRoomView({
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder={t("Write a message…", "Skriv ett meddelande…")}
-                className="flex-1 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none"
+                className="flex-1 rounded-full border border-ink/10 bg-ink/[0.03] px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:outline-none"
               />
               <button
                 type="submit"

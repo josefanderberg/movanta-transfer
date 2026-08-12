@@ -43,14 +43,14 @@ export function SolutionSection() {
           </Reveal>
 
           <div className="relative mt-4">
-            <div className="mx-auto h-10 w-px bg-white/15" aria-hidden />
+            <div className="mx-auto h-10 w-px bg-ink/15" aria-hidden />
           </div>
 
-          <div className="grid grid-cols-1 gap-x-4 gap-y-10 border-t border-white/10 pt-10 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-x-4 gap-y-10 border-t border-ink/10 pt-10 sm:grid-cols-3 lg:grid-cols-5">
             {solutionPoints.map((point, i) => (
               <Reveal key={point} delay={i * 60} className="relative flex justify-center">
-                <span className="absolute -top-10 h-10 w-px bg-white/15 sm:block" aria-hidden />
-                <div className="w-full max-w-[180px] rounded-xl border border-white/10 bg-card px-4 py-5 text-center">
+                <span className="absolute -top-10 h-10 w-px bg-ink/15 sm:block" aria-hidden />
+                <div className="w-full max-w-[180px] rounded-xl border border-ink/10 bg-card px-4 py-5 text-center">
                   <p className="text-sm font-medium leading-snug text-text-primary">{point}</p>
                 </div>
               </Reveal>
@@ -61,7 +61,7 @@ export function SolutionSection() {
         <div className="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {positioningPillars.map((pillar, i) => (
             <Reveal key={pillar.title} delay={i * 50}>
-              <div className="h-full rounded-2xl border border-white/10 bg-card/60 px-5 py-5">
+              <div className="h-full rounded-2xl border border-ink/10 bg-card/60 px-5 py-5">
                 <p className="text-sm font-semibold text-yellow">{pillar.title}</p>
                 <p className="mt-1 text-sm text-text-secondary">{pillar.description}</p>
               </div>
@@ -82,7 +82,7 @@ export function SolutionSection() {
                   className={`h-full rounded-2xl border p-6 ${
                     item.highlight
                       ? "border-yellow/30 bg-yellow/[0.06]"
-                      : "border-white/10 bg-card/50"
+                      : "border-ink/10 bg-card/50"
                   }`}
                 >
                   <p

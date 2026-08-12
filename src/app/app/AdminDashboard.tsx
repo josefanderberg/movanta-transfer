@@ -36,7 +36,7 @@ function LicenseReviewSection({
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-xl font-semibold text-text-primary">{t("Driving licence verifications", "Körkortsverifieringar")}</h1>
-        <div className="flex gap-1.5 rounded-full border border-white/10 bg-card p-1">
+        <div className="flex gap-1.5 rounded-full border border-ink/10 bg-card p-1">
           {(["pending", "all"] as Filter[]).map((f) => (
             <button
               key={f}
@@ -51,7 +51,7 @@ function LicenseReviewSection({
       </div>
 
       {visible.length === 0 && (
-        <div className="rounded-2xl border border-white/10 bg-card p-8 text-center text-sm text-text-muted">
+        <div className="rounded-2xl border border-ink/10 bg-card p-8 text-center text-sm text-text-muted">
           {filter === "pending" ? t("Nothing waiting for review.", "Inget väntar på granskning.") : t("No submissions yet.", "Inga inskick än.")}
         </div>
       )}
@@ -60,7 +60,7 @@ function LicenseReviewSection({
         {visible.map((r) => {
           const user = users.find((u) => u.id === r.userId);
           return (
-            <div key={r.id} className="rounded-2xl border border-white/10 bg-card p-4">
+            <div key={r.id} className="rounded-2xl border border-ink/10 bg-card p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
                   <p className="text-sm font-semibold text-text-primary">{user ? `${user.firstName} ${user.lastName}` : t("Unknown user", "Okänd användare")}</p>
@@ -78,12 +78,12 @@ function LicenseReviewSection({
                   <div key={i}>
                     <p className="mb-1 text-[11px] text-text-muted">{i === 0 ? t("Front", "Framsida") : t("Back", "Baksida")}</p>
                     {/* eslint-disable-next-line @next/next/no-img-element -- local data: URL photos */}
-                    <img src={p} alt="" className="h-28 w-44 rounded-lg border border-white/10 object-cover" />
+                    <img src={p} alt="" className="h-28 w-44 rounded-lg border border-ink/10 object-cover" />
                   </div>
                 ))}
               </div>
               {r.status === "pending" && (
-                <div className="mt-3 flex justify-end gap-2 border-t border-white/10 pt-3">
+                <div className="mt-3 flex justify-end gap-2 border-t border-ink/10 pt-3">
                   <button
                     type="button"
                     onClick={() => onReject(r.id)}
@@ -116,7 +116,7 @@ function PhotoGrid({ label, photos }: { label: string; photos: string[] }) {
       <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
         {photos.map((p, i) => (
           // eslint-disable-next-line @next/next/no-img-element -- local data: URL photos
-          <img key={i} src={p} alt="" className="h-24 w-full rounded-lg border border-white/10 object-cover" />
+          <img key={i} src={p} alt="" className="h-24 w-full rounded-lg border border-ink/10 object-cover" />
         ))}
       </div>
     </div>
@@ -149,7 +149,7 @@ function ListingDetailModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
-      <div onClick={(e) => e.stopPropagation()} className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/10 bg-card p-6">
+      <div onClick={(e) => e.stopPropagation()} className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-ink/10 bg-card p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h2 className="text-lg font-semibold text-text-primary">
@@ -177,7 +177,7 @@ function ListingDetailModal({
             {listing.features.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {listing.features.map((f) => (
-                  <span key={f} className="rounded-full bg-white/[0.06] px-2.5 py-1 text-xs text-text-secondary">{f}</span>
+                  <span key={f} className="rounded-full bg-ink/[0.06] px-2.5 py-1 text-xs text-text-secondary">{f}</span>
                 ))}
               </div>
             )}
@@ -185,7 +185,7 @@ function ListingDetailModal({
 
           <div>
             <h3 className="mb-2 text-sm font-semibold text-text-primary">{t("Vehicle", "Fordon")}</h3>
-            <div className="space-y-1.5 rounded-xl border border-white/10 bg-white/[0.02] p-3.5">
+            <div className="space-y-1.5 rounded-xl border border-ink/10 bg-ink/[0.02] p-3.5">
               <DetailRow label={t("Registration number", "Registreringsnummer")} value={listing.regNumber || "—"} />
               <DetailRow label={t("Fuel", "Bränsle")} value={fuelLabel(listing.fuel, lang)} />
               <DetailRow label={t("Transmission", "Växellåda")} value={transmissionLabel(listing.transmission, lang)} />
@@ -197,7 +197,7 @@ function ListingDetailModal({
 
           <div>
             <h3 className="mb-2 text-sm font-semibold text-text-primary">{t("Pricing", "Prissättning")}</h3>
-            <div className="space-y-1.5 rounded-xl border border-white/10 bg-white/[0.02] p-3.5">
+            <div className="space-y-1.5 rounded-xl border border-ink/10 bg-ink/[0.02] p-3.5">
               <DetailRow label={t("Per hour", "Per timme")} value={listing.pricePerHour != null ? formatSEK(listing.pricePerHour) : "—"} />
               <DetailRow label={t("Per day", "Per dag")} value={formatSEK(listing.pricePerDay)} />
               <DetailRow label={t("Per week", "Per vecka")} value={listing.pricePerWeek != null ? formatSEK(listing.pricePerWeek) : "—"} />
@@ -209,7 +209,7 @@ function ListingDetailModal({
 
           <div>
             <h3 className="mb-2 text-sm font-semibold text-text-primary">{t("Location & pickup", "Plats & upphämtning")}</h3>
-            <div className="space-y-1.5 rounded-xl border border-white/10 bg-white/[0.02] p-3.5">
+            <div className="space-y-1.5 rounded-xl border border-ink/10 bg-ink/[0.02] p-3.5">
               <DetailRow label={t("Location", "Plats")} value={listing.location || "—"} />
               <DetailRow label={t("Pickup location", "Upphämtningsplats")} value={listing.pickupLocation || "—"} />
               <DetailRow label={t("Available from", "Tillgänglig från")} value={listing.availableFrom || "—"} />
@@ -220,7 +220,7 @@ function ListingDetailModal({
 
           <div>
             <h3 className="mb-2 text-sm font-semibold text-text-primary">{t("Rules & requirements", "Regler & krav")}</h3>
-            <div className="space-y-1.5 rounded-xl border border-white/10 bg-white/[0.02] p-3.5">
+            <div className="space-y-1.5 rounded-xl border border-ink/10 bg-ink/[0.02] p-3.5">
               <DetailRow label={t("Minimum renter age", "Lägsta ålder för hyresgäst")} value={`${listing.minRenterAge} ${t("years", "år")}`} />
               <DetailRow label={t("Minimum licence years", "Minsta antal år med körkort")} value={String(listing.minLicenseYears)} />
               <DetailRow label={t("Smoking", "Rökning")} value={yesNo(listing.smokingAllowed)} />
@@ -237,7 +237,7 @@ function ListingDetailModal({
 
           <div>
             <h3 className="mb-2 text-sm font-semibold text-text-primary">{t("Insurance & listing identity", "Försäkring & annonsidentitet")}</h3>
-            <div className="space-y-1.5 rounded-xl border border-white/10 bg-white/[0.02] p-3.5">
+            <div className="space-y-1.5 rounded-xl border border-ink/10 bg-ink/[0.02] p-3.5">
               <DetailRow label={t("Insurance option", "Försäkringsalternativ")} value={listing.insuranceOption} />
               <DetailRow label={t("Listing identity", "Annonsidentitet")} value={listing.identityType} />
               {listing.publicDisplayName && <DetailRow label={t("Public display name", "Publikt visningsnamn")} value={listing.publicDisplayName} />}
@@ -246,7 +246,7 @@ function ListingDetailModal({
 
           <div>
             <h3 className="mb-2 text-sm font-semibold text-text-primary">{t("Owner", "Ägare")}</h3>
-            <div className="space-y-1.5 rounded-xl border border-white/10 bg-white/[0.02] p-3.5">
+            <div className="space-y-1.5 rounded-xl border border-ink/10 bg-ink/[0.02] p-3.5">
               <DetailRow label={t("Name", "Namn")} value={owner ? `${owner.firstName} ${owner.lastName}` : t("Unknown", "Okänd")} />
               <DetailRow label={t("Email", "E-post")} value={owner?.email ?? "—"} />
               <DetailRow label={t("Submitted", "Inskickat")} value={dateFmt(request.submittedAt)} />
@@ -256,7 +256,7 @@ function ListingDetailModal({
         </div>
 
         {request.status === "pending" && (
-          <div className="mt-5 flex justify-end gap-2 border-t border-white/10 pt-4">
+          <div className="mt-5 flex justify-end gap-2 border-t border-ink/10 pt-4">
             <button
               type="button"
               onClick={() => { onReject(); onClose(); }}
@@ -294,7 +294,7 @@ function ListingReviewSection({
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-xl font-semibold text-text-primary">{t("Listing reviews", "Annonsgranskningar")}</h1>
-        <div className="flex gap-1.5 rounded-full border border-white/10 bg-card p-1">
+        <div className="flex gap-1.5 rounded-full border border-ink/10 bg-card p-1">
           {(["pending", "all"] as Filter[]).map((f) => (
             <button
               key={f}
@@ -309,7 +309,7 @@ function ListingReviewSection({
       </div>
 
       {visible.length === 0 && (
-        <div className="rounded-2xl border border-white/10 bg-card p-8 text-center text-sm text-text-muted">
+        <div className="rounded-2xl border border-ink/10 bg-card p-8 text-center text-sm text-text-muted">
           {filter === "pending" ? t("Nothing waiting for review.", "Inget väntar på granskning.") : t("No submissions yet.", "Inga inskick än.")}
         </div>
       )}
@@ -320,11 +320,11 @@ function ListingReviewSection({
           const owner = users.find((u) => u.id === r.ownerId);
           const cover = listing?.exteriorPhotos[0] ?? listing?.interiorPhotos[0];
           return (
-            <div key={r.id} className="rounded-2xl border border-white/10 bg-card p-4">
+            <div key={r.id} className="rounded-2xl border border-ink/10 bg-card p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="flex items-center gap-3">
                   <div
-                    className="h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-white/10"
+                    className="h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-ink/10"
                     style={{ background: `linear-gradient(135deg, ${listing?.color ?? "#5B8DEF"}33, #101214 75%)` }}
                   >
                     {cover && (
@@ -345,12 +345,12 @@ function ListingReviewSection({
                 {t("Submitted", "Inskickat")} {new Date(r.submittedAt).toLocaleDateString(lang === "sv" ? "sv-SE" : "en-GB")}
                 {r.reviewedAt && ` · ${t("Reviewed", "Granskat")} ${new Date(r.reviewedAt).toLocaleDateString(lang === "sv" ? "sv-SE" : "en-GB")}`}
               </p>
-              <div className="mt-3 flex flex-wrap justify-end gap-2 border-t border-white/10 pt-3">
+              <div className="mt-3 flex flex-wrap justify-end gap-2 border-t border-ink/10 pt-3">
                 {listing && (
                   <button
                     type="button"
                     onClick={() => setDetailRequestId(r.id)}
-                    className="rounded-full border border-white/15 bg-white/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary hover:border-white/25"
+                    className="rounded-full border border-ink/15 bg-ink/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary hover:border-ink/25"
                   >
                     {t("View details", "Visa detaljer")}
                   </button>
@@ -437,7 +437,7 @@ export function AdminDashboard({
         </button>
       </div>
 
-      <div className="mb-6 flex gap-1.5 rounded-full border border-white/10 bg-card p-1">
+      <div className="mb-6 flex gap-1.5 rounded-full border border-ink/10 bg-card p-1">
         {(["licenses", "listings"] as Section[]).map((s) => (
           <button
             key={s}
@@ -460,7 +460,7 @@ export function AdminDashboard({
 
       {confirmReset && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={() => setConfirmReset(false)}>
-          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-sm rounded-2xl border border-white/10 bg-card p-6">
+          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-sm rounded-2xl border border-ink/10 bg-card p-6">
             <h2 className="text-base font-semibold text-text-primary">{t("Reset all data?", "Återställ all data?")}</h2>
             <p className="mt-1.5 text-sm text-text-secondary">
               {t(
@@ -469,7 +469,7 @@ export function AdminDashboard({
               )}
             </p>
             <div className="mt-4 flex gap-3">
-              <button type="button" onClick={() => setConfirmReset(false)} className="flex-1 rounded-full border border-white/15 bg-white/[0.03] py-2.5 text-sm font-medium text-text-primary">
+              <button type="button" onClick={() => setConfirmReset(false)} className="flex-1 rounded-full border border-ink/15 bg-ink/[0.03] py-2.5 text-sm font-medium text-text-primary">
                 {t("Cancel", "Avbryt")}
               </button>
               <button

@@ -7,7 +7,7 @@ const variants = {
   primary:
     "overflow-hidden bg-yellow text-[#08090A] px-6 py-3.5 hover:-translate-y-0.5 hover:brightness-95 active:translate-y-0",
   secondary:
-    "border border-white/15 bg-white/[0.03] text-text-primary px-6 py-3.5 hover:border-white/25 hover:bg-white/[0.06] active:translate-y-0",
+    "border border-ink/15 bg-ink/[0.03] text-text-primary px-6 py-3.5 hover:border-ink/25 hover:bg-ink/[0.06] active:translate-y-0",
   ghost:
     "text-text-secondary px-2 py-1 hover:text-text-primary underline-offset-4 hover:underline",
 };
@@ -22,7 +22,7 @@ function Shine({ variant }: { variant: keyof typeof variants }) {
   if (variant !== "primary") return null;
   return (
     <span
-      className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full motion-reduce:hidden"
+      className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-ink/40 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full motion-reduce:hidden"
       aria-hidden
     />
   );

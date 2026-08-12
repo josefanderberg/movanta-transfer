@@ -13,6 +13,26 @@
   --color-metal: #c6cbd1;
   --color-border: rgba(255, 255, 255, 0.1);
   --color-border-strong: rgba(255, 255, 255, 0.16);
+  /* Foreground tint base: white in dark mode, near-black in light mode.
+     Used with opacity modifiers (ink/10 etc.) for hairlines and surface tints
+     that must invert with the theme. */
+  --color-ink: #ffffff;
+  color-scheme: dark;
+}
+
+html.light {
+  --color-bg: #f5f6f8;
+  --color-bg-secondary: #eceef1;
+  --color-card: #ffffff;
+  --color-surface: #f0f1f4;
+  --color-text-primary: #14171c;
+  --color-text-secondary: #4d555f;
+  --color-text-muted: #7b828c;
+  --color-metal: #5a626c;
+  --color-border: rgba(10, 13, 17, 0.1);
+  --color-border-strong: rgba(10, 13, 17, 0.16);
+  --color-ink: #0b0e12;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -26,6 +46,7 @@
   --color-text-secondary: var(--color-text-secondary);
   --color-text-muted: var(--color-text-muted);
   --color-metal: var(--color-metal);
+  --color-ink: var(--color-ink);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -89,6 +110,70 @@ body {
   background: var(--color-bg);
   color: var(--color-text-primary);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Theme switch: the toggle runs a circular reveal through the View Transition
+   API. The default cross-fade is disabled so the WAAPI clip-path animation
+   (see ThemeProvider) is the only motion. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Fallback when startViewTransition is unavailable: ThemeProvider briefly adds
+   .theme-switching so every themed property cross-fades in place. !important
+   is needed to override per-element transition utilities during the switch. */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease,
+    fill 0.4s ease,
+    stroke 0.4s ease,
+    box-shadow 0.4s ease !important;
+}
+
+/* Sun/moon morph inside the theme toggle button. Keyed off html.light rather
+   than React state so the icon is correct before hydration. transform-box is
+   required so scale/translate originate from each circle's own center. */
+.theme-icon {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+html.light .theme-icon {
+  transform: rotate(90deg);
+}
+.theme-icon-sun {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+html.light .theme-icon-sun {
+  transform: scale(0.625);
+}
+.theme-icon-mask {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+html.light .theme-icon-mask {
+  transform: translate(10px, -12px);
+}
+.theme-icon-rays {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.4);
+  opacity: 0;
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease;
+}
+html.light .theme-icon-rays {
+  transform: scale(1);
+  opacity: 1;
 }
 
 ::selection {

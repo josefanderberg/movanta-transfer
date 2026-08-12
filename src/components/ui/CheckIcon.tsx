@@ -2,7 +2,7 @@ export function CheckIcon({ tone = "default" }: { tone?: "default" | "yellow" })
   return (
     <span
       className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${
-        tone === "yellow" ? "bg-yellow/15 text-yellow" : "bg-white/10 text-metal"
+        tone === "yellow" ? "bg-yellow/15 text-yellow" : "bg-ink/10 text-metal"
       }`}
       aria-hidden
     >

@@ -14,7 +14,7 @@ export function DropsSection() {
   return (
     <section id="drops" className="py-24 sm:py-32">
       <Container>
-        <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-card to-bg-secondary p-8 sm:p-12">
+        <div className="overflow-hidden rounded-[2rem] border border-ink/10 bg-gradient-to-br from-card to-bg-secondary p-8 sm:p-12">
           <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-16">
             <div>
               <Reveal>
@@ -48,7 +48,7 @@ export function DropsSection() {
             </div>
 
             <Reveal delay={140} className="relative">
-              <div className="relative mx-auto aspect-square w-full max-w-sm rounded-2xl border border-white/10 bg-bg-secondary p-6">
+              <div className="relative mx-auto aspect-square w-full max-w-sm rounded-2xl border border-ink/10 bg-bg-secondary p-6">
                 <svg className="h-full w-full opacity-70" viewBox="0 0 200 200" fill="none" aria-hidden>
                   <path d="M-10 50 L60 60 L100 30 L210 70" stroke="#C6CBD1" strokeOpacity="0.25" />
                   <path d="M-10 150 L80 140 L140 175 L210 150" stroke="#C6CBD1" strokeOpacity="0.25" />

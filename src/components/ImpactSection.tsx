@@ -31,7 +31,7 @@ export function ImpactSection() {
           <Reveal delay={100}>
             <ul className="grid gap-4 sm:grid-cols-2">
               {impactPoints.map((point) => (
-                <li key={point} className="flex items-start gap-3 rounded-xl border border-white/10 bg-card/50 p-4 text-sm text-text-secondary transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-card">
+                <li key={point} className="flex items-start gap-3 rounded-xl border border-ink/10 bg-card/50 p-4 text-sm text-text-secondary transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/20 hover:bg-card">
                   <CheckIcon tone="yellow" />
                   <span>{point}</span>
                 </li>

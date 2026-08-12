@@ -25,9 +25,9 @@ export function ProblemSection() {
 
         <div className="mt-14 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <Reveal delay={80} className="order-2 lg:order-1">
-            <div className="rounded-2xl border border-white/10 bg-card p-7">
+            <div className="rounded-2xl border border-ink/10 bg-card p-7">
               <p className="text-sm font-medium text-text-secondary">{t("A privately owned vehicle, in a typical day", "Ett privatägt fordon, under en typisk dag")}</p>
-              <div className="mt-5 flex h-10 w-full overflow-hidden rounded-full border border-white/10 bg-bg-secondary">
+              <div className="mt-5 flex h-10 w-full overflow-hidden rounded-full border border-ink/10 bg-bg-secondary">
                 <div className="flex h-full w-[12%] items-center justify-center bg-yellow">
                   <span className="sr-only">{t("Driving", "Körning")}</span>
                 </div>
@@ -38,7 +38,7 @@ export function ProblemSection() {
                   <span className="h-2 w-2 rounded-full bg-yellow" /> {t("Driving", "Körning")}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-surface ring-1 ring-white/15" /> {t("Parked and unused", "Parkerat och oanvänt")}
+                  <span className="h-2 w-2 rounded-full bg-surface ring-1 ring-ink/15" /> {t("Parked and unused", "Parkerat och oanvänt")}
                 </span>
               </div>
               <p className="mt-5 text-sm leading-relaxed text-text-muted">
@@ -50,7 +50,7 @@ export function ProblemSection() {
           <div className="order-1 grid gap-4 sm:grid-cols-2 lg:order-2">
             {problemPoints.map((point, i) => (
               <Reveal key={point.title} delay={i * 60}>
-                <div className="h-full rounded-2xl border border-white/10 bg-card/60 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_20px_40px_-28px_rgba(0,0,0,0.55)]">
+                <div className="h-full rounded-2xl border border-ink/10 bg-card/60 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-ink/20 hover:shadow-[0_20px_40px_-28px_rgba(0,0,0,0.55)]">
                   <h3 className="text-base font-semibold text-text-primary">{point.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-text-secondary">{point.description}</p>
                 </div>

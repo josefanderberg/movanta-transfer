@@ -26,7 +26,7 @@ export function PrivateSection() {
         />
 
         <div className="mt-14 grid gap-6 lg:grid-cols-2">
-          <Reveal className="rounded-2xl border border-white/10 bg-card p-8 transition-colors duration-200 hover:border-white/20">
+          <Reveal className="rounded-2xl border border-ink/10 bg-card p-8 transition-colors duration-200 hover:border-ink/20">
             <h3 className="text-xl font-semibold text-text-primary">{t("For renters", "För hyresgäster")}</h3>
             <p className="mt-2 text-sm text-text-secondary">
               {t("Find what you need nearby, and book it with confidence.", "Hitta det du behöver i närheten, och boka det med förtroende.")}

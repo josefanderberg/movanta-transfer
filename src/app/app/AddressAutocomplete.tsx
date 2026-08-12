@@ -100,11 +100,11 @@ export function AddressAutocomplete({
         aria-expanded={open}
         aria-autocomplete="list"
         aria-controls="address-suggestions"
-        className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none"
+        className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none"
       />
       {loading && <span className="absolute right-3 top-[calc(50%+4px)] -translate-y-1/2 text-[11px] text-text-muted">{t("Searching…", "Söker…")}</span>}
       {open && (
-        <div id="address-suggestions" className="absolute z-20 mt-1 w-full overflow-hidden rounded-lg border border-white/10 bg-card shadow-xl">
+        <div id="address-suggestions" className="absolute z-20 mt-1 w-full overflow-hidden rounded-lg border border-ink/10 bg-card shadow-xl">
           {suggestions.length > 0 ? (
             <ul role="listbox">
               {suggestions.map((s, i) => (
@@ -116,7 +116,7 @@ export function AddressAutocomplete({
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => choose(s)}
                     className={`flex w-full flex-col items-start gap-0.5 px-3.5 py-2.5 text-left text-sm ${
-                      i === activeIndex ? "bg-yellow/10 text-yellow" : "text-text-primary hover:bg-white/[0.04]"
+                      i === activeIndex ? "bg-yellow/10 text-yellow" : "text-text-primary hover:bg-ink/[0.04]"
                     }`}
                   >
                     <span>{s.street || s.label}</span>

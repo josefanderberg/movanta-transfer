@@ -2,8 +2,9 @@
 
 import "leaflet/dist/leaflet.css";
 import { useEffect, useRef } from "react";
-import type { Map as LeafletMap, LayerGroup, Marker } from "leaflet";
+import type { Map as LeafletMap, LayerGroup, Marker, TileLayer } from "leaflet";
 import type * as LeafletNS from "leaflet";
+import { useTheme } from "@/lib/theme";
 import { formatSEK } from "./data";
 import type { VehicleType } from "./data";
 import { fetchFastestRoute } from "./geo";
@@ -39,11 +40,15 @@ function typeGlyph(type: VehicleType): string {
   }
 }
 
+function tileUrl(theme: "dark" | "light"): string {
+  return `https://{s}.basemaps.cartocdn.com/${theme === "light" ? "light_all" : "dark_all"}/{z}/{x}/{y}{r}.png`;
+}
+
 function buildBadgeIcon(L: typeof LeafletNS, v: MapVehicle, active: boolean) {
   const size = active ? 40 : 34;
   const html = `<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
-    <div style="width:${size}px;height:${size}px;border-radius:999px;background:${v.color};border:${active ? 3 : 2}px solid ${active ? "#FFD400" : "#08090A"};display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,0.55);transition:all .15s ease">${typeGlyph(v.type)}</div>
-    <div style="padding:2px 7px;border-radius:999px;background:${active ? "#FFD400" : "#17191c"};border:1px solid ${active ? "#FFD400" : "rgba(255,255,255,0.18)"};color:${active ? "#08090A" : "#f7f8fa"};font:600 10px/1 system-ui,sans-serif;white-space:nowrap">${formatSEK(v.pricePerDay)}</div>
+    <div style="width:${size}px;height:${size}px;border-radius:999px;background:${v.color};border:${active ? 3 : 2}px solid ${active ? "#FFD400" : "var(--color-bg)"};display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,0.55);transition:all .15s ease">${typeGlyph(v.type)}</div>
+    <div style="padding:2px 7px;border-radius:999px;background:${active ? "#FFD400" : "var(--color-card)"};border:1px solid ${active ? "#FFD400" : "var(--color-border-strong)"};color:${active ? "#08090A" : "var(--color-text-primary)"};font:600 10px/1 system-ui,sans-serif;white-space:nowrap">${formatSEK(v.pricePerDay)}</div>
   </div>`;
   return L.divIcon({ className: "", html, iconSize: [1, 1], iconAnchor: [size / 2, size / 2] });
 }
@@ -67,8 +72,14 @@ export default function RealMap({
   onRouteResult: (vehicleId: string, result: RouteResult | null) => void;
   height?: string;
 }) {
+  const { theme } = useTheme();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<LeafletMap | null>(null);
+  const tileLayerRef = useRef<TileLayer | null>(null);
+  // Read via ref during async map init so the once-only effect never closes
+  // over a stale theme.
+  const themeRef = useRef(theme);
+  themeRef.current = theme;
   const markersLayerRef = useRef<LayerGroup | null>(null);
   const routeLayerRef = useRef<LayerGroup | null>(null);
   const markersRef = useRef<Map<string, Marker>>(new Map());
@@ -80,7 +91,7 @@ export default function RealMap({
     import("leaflet").then((L) => {
       if (cancelled || !containerRef.current || mapRef.current) return;
       const map = L.map(containerRef.current, { zoomControl: false }).setView([center.lat, center.lng], 13);
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      tileLayerRef.current = L.tileLayer(tileUrl(themeRef.current), {
         attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
         subdomains: "abcd",
         maxZoom: 19,
@@ -97,6 +108,11 @@ export default function RealMap({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Swap between CARTO's dark and light basemaps when the site theme changes.
+  useEffect(() => {
+    tileLayerRef.current?.setUrl(tileUrl(theme));
+  }, [theme]);
 
   // Recenter only when `center` itself actually changes (e.g. location acquired) —
   // never as a side effect of unrelated re-renders, so manual pan/zoom sticks.
@@ -122,7 +138,7 @@ export default function RealMap({
       if (userCoord) {
         const youIcon = L.divIcon({
           className: "",
-          html: '<div style="width:16px;height:16px;border-radius:999px;background:#FFD400;border:3px solid #08090A;box-shadow:0 0 0 6px rgba(255,212,0,0.22)"></div>',
+          html: '<div style="width:16px;height:16px;border-radius:999px;background:#FFD400;border:3px solid var(--color-bg);box-shadow:0 0 0 6px rgba(255,212,0,0.22)"></div>',
           iconSize: [16, 16],
           iconAnchor: [8, 8],
         });
@@ -214,5 +230,5 @@ export default function RealMap({
     });
   }, [routeVehicleId, userCoord, vehicles, onRouteResult]);
 
-  return <div ref={containerRef} className={`w-full overflow-hidden rounded-2xl border border-white/10 bg-bg-secondary ${height}`} />;
+  return <div ref={containerRef} className={`w-full overflow-hidden rounded-2xl border border-ink/10 bg-bg-secondary ${height}`} />;
 }

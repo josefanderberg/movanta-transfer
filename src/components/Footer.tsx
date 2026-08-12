@@ -24,7 +24,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="border-t border-white/10 bg-bg-secondary">
+    <footer className="border-t border-ink/10 bg-bg-secondary">
       <Container className="py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="sm:col-span-2 lg:col-span-1">
@@ -91,7 +91,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-8 text-sm text-text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-3 border-t border-ink/10 pt-8 text-sm text-text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>{t("Movanta is currently under development.", "Movanta är för närvarande under utveckling.")}</p>
           <p>© {new Date().getFullYear()} Movanta. {t("All rights reserved.", "Alla rättigheter förbehållna.")}</p>
         </div>

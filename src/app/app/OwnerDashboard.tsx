@@ -12,19 +12,19 @@ function StatusPill({ listing }: { listing: Listing }) {
   const today = localTodayISO();
   if (listing.status === "Publicerad" && listing.availableFrom && listing.availableFrom > today) {
     return (
-      <span className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-medium text-text-muted">
+      <span className="rounded-full bg-ink/10 px-2.5 py-1 text-[11px] font-medium text-text-muted">
         {t("Available from", "Tillgänglig från")} {listing.availableFrom}
       </span>
     );
   }
   if (listing.status === "Publicerad" && !isAvailableToday(listing)) {
-    return <span className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-medium text-text-muted">{t("Unavailable right now", "Otillgänglig just nu")}</span>;
+    return <span className="rounded-full bg-ink/10 px-2.5 py-1 text-[11px] font-medium text-text-muted">{t("Unavailable right now", "Otillgänglig just nu")}</span>;
   }
   const tone =
     listing.status === "Publicerad" ? "bg-yellow/10 text-yellow"
     : listing.status === "Granskning" ? "bg-orange-500/10 text-orange-300"
-    : listing.status === "Pausad" ? "bg-white/10 text-text-secondary"
-    : "bg-white/[0.06] text-text-muted";
+    : listing.status === "Pausad" ? "bg-ink/10 text-text-secondary"
+    : "bg-ink/[0.06] text-text-muted";
   return <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${tone}`}>{statusLabel(listing.status, lang)}</span>;
 }
 
@@ -73,7 +73,7 @@ export function OwnerDashboard({
                   <p className="mt-1 text-xs text-text-muted">
                     {renter ? `${renter.firstName} ${renter.lastName}` : t("A renter", "En hyresgäst")} · {r.startDate} – {r.endDate}
                   </p>
-                  <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
+                  <div className="mt-3 flex items-center justify-between border-t border-ink/10 pt-3">
                     <span className="text-sm font-semibold text-text-primary">{formatSEK(r.totalPrice)}</span>
                     <div className="flex gap-2">
                       <button
@@ -107,7 +107,7 @@ export function OwnerDashboard({
               const v = vehicles.find((x) => x.id === b.vehicleId);
               const renter = getUsers().find((u) => u.id === b.userId);
               return (
-                <div key={b.id} className="rounded-2xl border border-white/10 bg-card p-4">
+                <div key={b.id} className="rounded-2xl border border-ink/10 bg-card p-4">
                   <div className="flex items-center justify-between gap-2">
                     <p className="text-sm font-semibold text-text-primary">{v ? `${v.brand} ${v.model}`.trim() : t("Vehicle", "Fordon")}</p>
                     <span className="shrink-0 rounded-full bg-yellow/10 px-2.5 py-1 text-[11px] font-medium text-yellow">{bookingStatusLabel(b.status, lang)}</span>
@@ -115,7 +115,7 @@ export function OwnerDashboard({
                   <p className="mt-1 text-xs text-text-muted">
                     {renter ? `${renter.firstName} ${renter.lastName}` : t("A renter", "En hyresgäst")} · {b.startDate} – {b.endDate}
                   </p>
-                  <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
+                  <div className="mt-3 flex items-center justify-between border-t border-ink/10 pt-3">
                     <span className="text-sm font-semibold text-text-primary">{formatSEK(b.totalPrice)}</span>
                     <button
                       type="button"
@@ -143,7 +143,7 @@ export function OwnerDashboard({
       </div>
 
       {listings.length === 0 ? (
-        <div className="rounded-2xl border border-white/10 bg-card p-10 text-center">
+        <div className="rounded-2xl border border-ink/10 bg-card p-10 text-center">
           <p className="text-sm text-text-secondary">{t("You haven't listed any vehicles yet.", "Du har inte listat några fordon än.")}</p>
           <button type="button" onClick={onNew} className="mt-3 text-sm font-medium text-yellow hover:underline">{t("List your first vehicle", "Lista ditt första fordon")}</button>
         </div>
@@ -152,10 +152,10 @@ export function OwnerDashboard({
           {listings.map((l) => {
             const latestReview = reviewRequests.filter((r) => r.listingId === l.id)[0];
             return (
-            <div key={l.id} className="rounded-2xl border border-white/10 bg-card p-4">
+            <div key={l.id} className="rounded-2xl border border-ink/10 bg-card p-4">
               <div className="flex items-center gap-3">
                 <div
-                  className="h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-white/10"
+                  className="h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-ink/10"
                   style={{ background: `linear-gradient(135deg, ${l.color}33, #101214 75%)` }}
                 >
                   {(l.exteriorPhotos[0] ?? l.interiorPhotos[0]) && (
@@ -180,15 +180,15 @@ export function OwnerDashboard({
                 </div>
               </div>
 
-              <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3">
-                <button type="button" onClick={() => onEdit(l.id)} className="rounded-full border border-white/15 bg-white/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary hover:border-white/25">
+              <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-ink/10 pt-3">
+                <button type="button" onClick={() => onEdit(l.id)} className="rounded-full border border-ink/15 bg-ink/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary hover:border-ink/25">
                   {t("Edit", "Redigera")}
                 </button>
-                <button type="button" onClick={() => onPreview(l.id)} className="rounded-full border border-white/15 bg-white/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary hover:border-white/25">
+                <button type="button" onClick={() => onPreview(l.id)} className="rounded-full border border-ink/15 bg-ink/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary hover:border-ink/25">
                   {t("Preview", "Förhandsvisa")}
                 </button>
                 {l.status === "Publicerad" && (
-                  <button type="button" onClick={() => onSetStatus(l.id, "Pausad")} className="rounded-full border border-white/15 bg-white/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary hover:border-white/25">
+                  <button type="button" onClick={() => onSetStatus(l.id, "Pausad")} className="rounded-full border border-ink/15 bg-ink/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary hover:border-ink/25">
                     {t("Pause", "Pausa")}
                   </button>
                 )}
@@ -213,11 +213,11 @@ export function OwnerDashboard({
 
       {confirmDeleteId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={() => setConfirmDeleteId(null)}>
-          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-sm rounded-2xl border border-white/10 bg-card p-6">
+          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-sm rounded-2xl border border-ink/10 bg-card p-6">
             <h2 className="text-base font-semibold text-text-primary">{t("Delete this listing?", "Ta bort denna annons?")}</h2>
             <p className="mt-1.5 text-sm text-text-secondary">{t("This can't be undone.", "Detta kan inte ångras.")}</p>
             <div className="mt-4 flex gap-3">
-              <button type="button" onClick={() => setConfirmDeleteId(null)} className="flex-1 rounded-full border border-white/15 bg-white/[0.03] py-2.5 text-sm font-medium text-text-primary">
+              <button type="button" onClick={() => setConfirmDeleteId(null)} className="flex-1 rounded-full border border-ink/15 bg-ink/[0.03] py-2.5 text-sm font-medium text-text-primary">
                 {t("Cancel", "Avbryt")}
               </button>
               <button

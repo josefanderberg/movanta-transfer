@@ -18,7 +18,7 @@ export function FAQ() {
       <Container>
         <SectionHeading eyebrow="FAQ" title={t("Common questions", "Vanliga frågor")} align="center" />
 
-        <Reveal delay={80} className="mx-auto mt-12 flex max-w-3xl flex-col divide-y divide-white/10 rounded-2xl border border-white/10 bg-card">
+        <Reveal delay={80} className="mx-auto mt-12 flex max-w-3xl flex-col divide-y divide-ink/10 rounded-2xl border border-ink/10 bg-card">
           {faqItems.map((item, index) => {
             const isOpen = openIndex === index;
             const buttonId = `faq-button-${index}`;
@@ -37,7 +37,7 @@ export function FAQ() {
                   >
                     <span className="text-base font-medium text-text-primary">{item.question}</span>
                     <span
-                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/15 text-text-secondary transition-transform duration-200 ${
+                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-ink/15 text-text-secondary transition-transform duration-200 ${
                         isOpen ? "rotate-45 border-yellow/40 text-yellow" : ""
                       }`}
                       aria-hidden

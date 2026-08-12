@@ -51,7 +51,7 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={40} className="mt-6">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-sm text-text-secondary">
+            <span className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-ink/[0.03] px-4 py-1.5 text-sm text-text-secondary">
               <span className="h-1.5 w-1.5 rounded-full bg-yellow" />
               {brand.slogan}
             </span>

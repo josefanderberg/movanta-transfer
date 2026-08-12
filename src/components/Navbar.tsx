@@ -8,6 +8,7 @@ import { withBasePath } from "@/lib/basePath";
 import { useLanguage } from "@/lib/i18n";
 import { ButtonLink } from "./ui/Button";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar() {
   const { lang } = useLanguage();
@@ -58,7 +59,7 @@ export function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled
-          ? "border-b border-white/10 bg-bg/80 backdrop-blur-lg"
+          ? "border-b border-ink/10 bg-bg/80 backdrop-blur-lg"
           : "border-b border-transparent bg-transparent"
       }`}
     >
@@ -101,6 +102,7 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 lg:flex">
+          <ThemeToggle />
           <LanguageSwitcher />
           <ButtonLink href="#waitlist" className="text-sm">
             {brand.waitlistCta}
@@ -108,11 +110,12 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
+          <ThemeToggle />
           <LanguageSwitcher />
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-text-primary"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/10 text-text-primary"
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -135,7 +138,7 @@ export function Navbar() {
 
       <div
         id="mobile-menu"
-        className={`grid overflow-hidden border-b border-white/10 bg-bg transition-[grid-template-rows] duration-300 ease-out lg:hidden ${
+        className={`grid overflow-hidden border-b border-ink/10 bg-bg transition-[grid-template-rows] duration-300 ease-out lg:hidden ${
           menuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr] border-b-0"
         }`}
       >
@@ -146,7 +149,7 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="rounded-lg px-3 py-3 text-base font-medium text-text-secondary transition-colors hover:bg-white/[0.04] hover:text-text-primary"
+                className="rounded-lg px-3 py-3 text-base font-medium text-text-secondary transition-colors hover:bg-ink/[0.04] hover:text-text-primary"
               >
                 {link.label}
               </a>

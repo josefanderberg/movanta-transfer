@@ -123,7 +123,7 @@ export function WaitlistForm() {
           <form
             noValidate
             onSubmit={handleSubmit}
-            className="rounded-2xl border border-white/10 bg-card p-6 sm:p-9"
+            className="rounded-2xl border border-ink/10 bg-card p-6 sm:p-9"
           >
             <div className="grid gap-5 sm:grid-cols-2">
               <Field
@@ -250,6 +250,6 @@ function Field({
 
 function inputClass(hasError: boolean) {
   return `w-full rounded-lg border bg-bg-secondary px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-yellow ${
-    hasError ? "border-yellow/60" : "border-white/10 focus:border-white/25"
+    hasError ? "border-yellow/60" : "border-ink/10 focus:border-ink/25"
   }`;
 }

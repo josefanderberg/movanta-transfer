@@ -7,7 +7,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
 
   return (
     <div
-      className={`flex items-center rounded-full border border-white/10 bg-white/[0.03] p-0.5 text-xs font-semibold ${className}`}
+      className={`flex items-center rounded-full border border-ink/10 bg-ink/[0.03] p-0.5 text-xs font-semibold ${className}`}
       role="group"
       aria-label="Language"
     >

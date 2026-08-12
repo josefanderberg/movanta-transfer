@@ -14,7 +14,7 @@ export function BusinessSection() {
   const { businessFeatures, dealerJourneySteps } = lang === "sv" ? sv : en;
 
   return (
-    <section id="business" className="relative border-y border-white/10 bg-bg-secondary py-24 sm:py-32">
+    <section id="business" className="relative border-y border-ink/10 bg-bg-secondary py-24 sm:py-32">
       <Container>
         <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
           <div>
@@ -56,7 +56,7 @@ export function BusinessSection() {
           </Reveal>
         </div>
 
-        <Reveal delay={200} className="mt-16 rounded-2xl border border-white/10 bg-card/50 p-6 sm:p-8">
+        <Reveal delay={200} className="mt-16 rounded-2xl border border-ink/10 bg-card/50 p-6 sm:p-8">
           <p className="text-sm font-semibold text-text-primary">
             {t("From showroom uncertainty to a real-world experience", "Från osäkerhet i showroomet till en verklig upplevelse")}
           </p>
@@ -69,7 +69,7 @@ export function BusinessSection() {
           <ol className="mt-6 grid gap-4 sm:grid-cols-5">
             {dealerJourneySteps.map((step, i) => (
               <li key={step} className="flex items-start gap-2.5 sm:flex-col sm:gap-3">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/15 text-xs font-medium text-yellow">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-ink/15 text-xs font-medium text-yellow">
                   {i + 1}
                 </span>
                 <span className="text-sm text-text-secondary">{step}</span>

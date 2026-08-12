@@ -27,14 +27,14 @@ export function VehicleMarketplacePreview() {
     <div className="relative mx-auto w-full max-w-md select-none">
       <div className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-yellow/[0.06] blur-3xl" aria-hidden />
 
-      <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-card shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]">
+      <div className="overflow-hidden rounded-[1.75rem] border border-ink/10 bg-card shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]">
         {/* Status / search bar */}
-        <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+        <div className="flex items-center justify-between border-b border-ink/10 px-5 py-4">
           <div>
             <p className="text-xs text-text-muted">{t("Searching near", "Söker nära")}</p>
             <p className="text-sm font-medium text-text-primary">{t("Central Stockholm", "Centrala Stockholm")}</p>
           </div>
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.06]">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-ink/[0.06]">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
               <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.4" className="text-text-secondary" />
               <path d="M11 11L14.5 14.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" className="text-text-secondary" />
@@ -85,7 +85,7 @@ export function VehicleMarketplacePreview() {
                   className={`relative flex h-9 w-9 items-center justify-center rounded-full border shadow-lg transition-all duration-200 ${
                     activeId === vehicle.id
                       ? "scale-110 border-yellow bg-yellow text-[#08090A]"
-                      : "border-white/20 bg-card text-text-primary group-hover:border-white/40"
+                      : "border-ink/20 bg-card text-text-primary group-hover:border-ink/40"
                   }`}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -112,7 +112,7 @@ export function VehicleMarketplacePreview() {
         </div>
 
         {/* Booking card */}
-        <div className="border-t border-white/10 p-5">
+        <div className="border-t border-ink/10 p-5">
           <div className="flex items-start justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">

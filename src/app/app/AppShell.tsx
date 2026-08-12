@@ -52,11 +52,12 @@ import { ListingWizard } from "./ListingWizard";
 import type { MapVehicle } from "./RealMap";
 import { useLanguage, type Lang } from "@/lib/i18n";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const RealMap = dynamic(() => import("./RealMap"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-[420px] w-full items-center justify-center rounded-2xl border border-white/10 bg-bg-secondary text-sm text-text-muted">
+    <div className="flex h-[420px] w-full items-center justify-center rounded-2xl border border-ink/10 bg-bg-secondary text-sm text-text-muted">
       Loading map…
     </div>
   ),
@@ -113,7 +114,7 @@ function VehicleThumb({ vehicle, className = "h-40 w-full", compact = false }: {
         // eslint-disable-next-line @next/next/no-img-element -- user photos are local data: URLs, not next/image-compatible remote assets
         <img src={vehicle.thumb ?? vehicle.photos[0]} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
       ) : (
-        <Icon name={vehicleIcon(vehicle.type)} className={compact ? "h-7 w-7 text-white/30" : "h-16 w-16 text-white/25"} />
+        <Icon name={vehicleIcon(vehicle.type)} className={compact ? "h-7 w-7 text-ink/30" : "h-16 w-16 text-ink/25"} />
       )}
       {!compact && vehicle.fuel === "El" && (
         <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-bg/70 text-yellow">
@@ -128,7 +129,7 @@ function VehicleThumb({ vehicle, className = "h-40 w-full", compact = false }: {
       {!compact && (
         <span
           className={`absolute bottom-3 right-3 rounded-full px-2.5 py-1 text-[11px] font-medium ${
-            vehicle.available ? "bg-yellow/15 text-yellow" : upcoming ? "bg-white/10 text-text-secondary" : "bg-white/10 text-text-muted"
+            vehicle.available ? "bg-yellow/15 text-yellow" : upcoming ? "bg-ink/10 text-text-secondary" : "bg-ink/10 text-text-muted"
           }`}
         >
           {vehicle.available ? t("Available now", "Tillgänglig nu") : upcoming ? `${t("Available from", "Tillgänglig från")} ${upcoming}` : t("Booked", "Bokad")}
@@ -147,7 +148,7 @@ function DocPhotoRow({ label, photos }: { label: string; photos?: string[] }) {
         <div className="mt-1.5 flex gap-2 overflow-x-auto pb-1">
           {photos.map((p, i) => (
             // eslint-disable-next-line @next/next/no-img-element -- local data: URL photos
-            <img key={i} src={p} alt="" className="h-20 w-28 shrink-0 rounded-lg border border-white/10 object-cover" />
+            <img key={i} src={p} alt="" className="h-20 w-28 shrink-0 rounded-lg border border-ink/10 object-cover" />
           ))}
         </div>
       ) : (
@@ -173,7 +174,7 @@ function VehicleCard({ vehicle, onOpen }: { vehicle: Vehicle; onOpen: () => void
     <button
       type="button"
       onClick={onOpen}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-card p-3 text-left shadow-[0_20px_50px_-30px_rgba(0,0,0,0.8)] transition-transform duration-200 hover:-translate-y-1 hover:border-white/20"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-ink/10 bg-card p-3 text-left shadow-[0_20px_50px_-30px_rgba(0,0,0,0.8)] transition-transform duration-200 hover:-translate-y-1 hover:border-ink/20"
     >
       <VehicleThumb vehicle={vehicle} />
       <div className="mt-3 flex items-start justify-between gap-2">
@@ -195,7 +196,7 @@ function VehicleCard({ vehicle, onOpen }: { vehicle: Vehicle; onOpen: () => void
         )}
         <span className="flex items-center gap-1"><Icon name="pin" className="h-3.5 w-3.5" />{vehicle.distanceKm} km</span>
       </div>
-      <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
+      <div className="mt-3 flex items-center justify-between border-t border-ink/10 pt-3">
         <span className="text-base font-semibold text-text-primary">{formatSEK(vehicle.pricePerDay)}<span className="text-xs font-normal text-text-muted">/{t("day", "dag")}</span></span>
         <span className="flex items-center gap-1 text-xs font-medium text-yellow opacity-0 transition-opacity group-hover:opacity-100">
           {t("View vehicle", "Se fordon")} <Icon name="arrowRight" className="h-3 w-3" />
@@ -274,7 +275,7 @@ function AppMap({
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/10 bg-card px-4 py-2.5">
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-ink/10 bg-card px-4 py-2.5">
         <span className="flex items-center gap-1.5 text-xs text-text-secondary">
           <Icon name="pin" className="h-3.5 w-3.5 text-yellow" />
           {locationLabel(locationStatus, t)}
@@ -290,7 +291,7 @@ function AppMap({
         </button>
       </div>
       {list.length === 0 ? (
-        <div className={`flex w-full items-center justify-center rounded-2xl border border-white/10 bg-bg-secondary text-sm text-text-muted ${height}`}>
+        <div className={`flex w-full items-center justify-center rounded-2xl border border-ink/10 bg-bg-secondary text-sm text-text-muted ${height}`}>
           {t("No vehicles to show on the map", "Inga fordon att visa på kartan")}
         </div>
       ) : (
@@ -306,7 +307,7 @@ function AppMap({
             height={height}
           />
           {selectedVehicle && (
-            <div className="animate-fade-up fixed inset-x-3 bottom-24 z-[1200] mx-auto max-w-xl rounded-2xl border border-white/10 bg-card/95 p-4 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)] backdrop-blur lg:bottom-6">
+            <div className="animate-fade-up fixed inset-x-3 bottom-24 z-[1200] mx-auto max-w-xl rounded-2xl border border-ink/10 bg-card/95 p-4 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)] backdrop-blur lg:bottom-6">
               <button
                 type="button"
                 onClick={closeSelection}
@@ -342,7 +343,7 @@ function AppMap({
                   <button
                     type="button"
                     onClick={calculateRoute}
-                    className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-2 text-xs font-medium text-text-primary transition-colors hover:border-yellow/40 hover:text-yellow"
+                    className="flex items-center gap-1.5 rounded-full border border-ink/15 bg-ink/[0.04] px-3.5 py-2 text-xs font-medium text-text-primary transition-colors hover:border-yellow/40 hover:text-yellow"
                   >
                     <Icon name="compass" className="h-3.5 w-3.5" />
                     {userCoord ? t("Calculate fastest route", "Beräkna snabbaste väg") : t("Share location to calculate route", "Dela plats för att beräkna väg")}
@@ -1031,7 +1032,7 @@ export default function AppShell() {
   return (
     <div className="min-h-screen bg-bg pb-20 lg:pb-0">
       {!focusedFlow && (
-        <header className="sticky top-0 z-40 border-b border-white/10 bg-bg/90 backdrop-blur-lg">
+        <header className="sticky top-0 z-40 border-b border-ink/10 bg-bg/90 backdrop-blur-lg">
           <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-3.5 sm:px-8">
             <button type="button" onClick={() => go("explore")} className="flex items-center gap-2.5 text-text-primary">
               <Image src={withBasePath("/assets/movanta-logo.png")} alt="Movanta" width={512} height={512} className="h-8 w-8 rounded-lg" />
@@ -1045,7 +1046,7 @@ export default function AppShell() {
                   type="button"
                   onClick={() => (item.view === "bookings" || item.view === "profile" ? requireAuth(item.view) : go(item.view))}
                   className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                    view === item.view ? "bg-white/[0.06] text-text-primary" : "text-text-secondary hover:text-text-primary"
+                    view === item.view ? "bg-ink/[0.06] text-text-primary" : "text-text-secondary hover:text-text-primary"
                   }`}
                 >
                   {item.label}
@@ -1054,12 +1055,13 @@ export default function AppShell() {
             </nav>
 
             <div className="hidden items-center gap-3 lg:flex">
+              <ThemeToggle />
               <LanguageSwitcher />
               {currentUser ? (
                 <button
                   type="button"
                   onClick={() => go("profile")}
-                  className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] py-1.5 pl-1.5 pr-4 text-sm font-medium text-text-primary hover:border-white/25"
+                  className="flex items-center gap-2 rounded-full border border-ink/10 bg-ink/[0.03] py-1.5 pl-1.5 pr-4 text-sm font-medium text-text-primary hover:border-ink/25"
                 >
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-yellow text-xs font-bold text-[#08090A]">
                     {currentUser.firstName[0]}{currentUser.lastName[0]}
@@ -1078,11 +1080,12 @@ export default function AppShell() {
             </div>
 
             <div className="flex items-center gap-2 lg:hidden">
+              <ThemeToggle />
               <LanguageSwitcher />
               <button
                 type="button"
                 onClick={() => setMobileMenu((m) => !m)}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-text-primary"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/10 text-text-primary"
                 aria-label={t("Menu", "Meny")}
               >
                 <Icon name={mobileMenu ? "close" : "list"} className="h-5 w-5" />
@@ -1091,7 +1094,7 @@ export default function AppShell() {
           </div>
 
           {mobileMenu && (
-            <div className="border-t border-white/10 px-5 py-3 lg:hidden">
+            <div className="border-t border-ink/10 px-5 py-3 lg:hidden">
               {currentUser ? (
                 <button type="button" onClick={() => go("profile")} className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-text-primary">
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-yellow text-xs font-bold text-[#08090A]">
@@ -1298,7 +1301,7 @@ export default function AppShell() {
       </main>
 
       {!focusedFlow && (
-        <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-bg/95 backdrop-blur-lg lg:hidden" aria-label={t("Mobile navigation", "Mobil navigering")}>
+        <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-bg/95 backdrop-blur-lg lg:hidden" aria-label={t("Mobile navigation", "Mobil navigering")}>
           <div className="mx-auto flex max-w-md items-center justify-around px-2 py-2">
             {navItems.map((item) => (
               <button
@@ -1318,7 +1321,7 @@ export default function AppShell() {
       )}
 
       {toast && (
-        <div className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full border border-white/10 bg-card px-5 py-2.5 text-sm text-text-primary shadow-xl lg:bottom-6">
+        <div className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full border border-ink/10 bg-card px-5 py-2.5 text-sm text-text-primary shadow-xl lg:bottom-6">
           {toast}
         </div>
       )}
@@ -1334,7 +1337,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       type="button"
       onClick={onClick}
       className={`shrink-0 rounded-full border px-3.5 py-2 text-xs font-medium transition-colors ${
-        active ? "border-yellow bg-yellow/10 text-yellow" : "border-white/10 bg-white/[0.03] text-text-secondary hover:border-white/25"
+        active ? "border-yellow bg-yellow/10 text-yellow" : "border-ink/10 bg-ink/[0.03] text-text-secondary hover:border-ink/25"
       }`}
     >
       {children}
@@ -1386,9 +1389,9 @@ function ExploreView({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-card p-4 shadow-[0_20px_50px_-30px_rgba(0,0,0,0.8)]">
+      <div className="rounded-2xl border border-ink/10 bg-card p-4 shadow-[0_20px_50px_-30px_rgba(0,0,0,0.8)]">
         <div className="grid gap-3 sm:grid-cols-2">
-          <label className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5">
+          <label className="flex items-center gap-2 rounded-xl border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5">
             <Icon name="search" className="h-4 w-4 text-text-muted" />
             <input
               value={filters.query}
@@ -1398,11 +1401,11 @@ function ExploreView({
             />
           </label>
           <div className="grid grid-cols-2 gap-3">
-            <label className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5">
+            <label className="flex items-center gap-2 rounded-xl border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5">
               <Icon name="calendar" className="h-4 w-4 text-text-muted" />
               <input type="date" value={searchDates.start} onChange={(e) => setSearchDates((s) => ({ ...s, start: e.target.value }))} className="w-full bg-transparent text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
             </label>
-            <label className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5">
+            <label className="flex items-center gap-2 rounded-xl border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5">
               <Icon name="calendar" className="h-4 w-4 text-text-muted" />
               <input type="date" value={searchDates.end} onChange={(e) => setSearchDates((s) => ({ ...s, end: e.target.value }))} className="w-full bg-transparent text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
             </label>
@@ -1429,7 +1432,7 @@ function ExploreView({
         </div>
 
         {moreFilters && (
-          <div className="mt-3 grid gap-4 rounded-xl border border-white/10 bg-white/[0.02] p-4 sm:grid-cols-3">
+          <div className="mt-3 grid gap-4 rounded-xl border border-ink/10 bg-ink/[0.02] p-4 sm:grid-cols-3">
             <div>
               <p className="mb-1.5 text-xs text-text-muted">{t("Price per day, max", "Pris per dag, max")} {Number.isFinite(filters.maxPrice) ? formatSEK(filters.maxPrice) : t("any", "alla")}</p>
               <input
@@ -1456,7 +1459,7 @@ function ExploreView({
             </div>
             <div>
               <p className="mb-1.5 text-xs text-text-muted">{t("Number of seats, minimum", "Antal säten, minst")}</p>
-              <select value={filters.minSeats} onChange={(e) => setFilters((f) => ({ ...f, minSeats: Number(e.target.value) }))} className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-text-primary focus:outline-none [color-scheme:dark]">
+              <select value={filters.minSeats} onChange={(e) => setFilters((f) => ({ ...f, minSeats: Number(e.target.value) }))} className="w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2 text-sm text-text-primary focus:outline-none [color-scheme:dark]">
                 <option value={0}>{t("All", "Alla")}</option>
                 <option value={2}>2+</option>
                 <option value={4}>4+</option>
@@ -1472,7 +1475,7 @@ function ExploreView({
 
       <div className="mt-5 flex items-center justify-between">
         <p className="text-sm text-text-secondary">{list.length} {t("vehicles near you", "fordon nära dig")}</p>
-        <div className="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1">
+        <div className="flex items-center gap-1 rounded-full border border-ink/10 bg-ink/[0.03] p-1">
           <button type="button" onClick={() => setMode("list")} className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium ${mode === "list" ? "bg-yellow text-[#08090A]" : "text-text-secondary"}`}>
             <Icon name="list" className="h-3.5 w-3.5" /> {t("List", "Lista")}
           </button>
@@ -1486,7 +1489,7 @@ function ExploreView({
         {mode === "map" ? (
           <AppMap list={list} userCoord={userCoord} locationStatus={locationStatus} onRequestLocation={onRequestLocation} onOpenVehicle={onOpenVehicle} />
         ) : list.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 bg-card p-10 text-center">
+          <div className="rounded-2xl border border-ink/10 bg-card p-10 text-center">
             <p className="text-sm text-text-secondary">{t("No vehicles match your filters.", "Inga fordon matchar dina filter.")}</p>
             <button type="button" onClick={clearFilters} className="mt-3 text-sm font-medium text-yellow underline-offset-4 hover:underline">{t("Clear filters", "Rensa filter")}</button>
           </div>
@@ -1536,7 +1539,7 @@ function VehicleDetailView({
           {photos.length > 0 ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element -- local data: URL photos */}
-              <img src={photos[activePhoto]} alt="" className="h-72 w-full rounded-2xl border border-white/10 object-cover" />
+              <img src={photos[activePhoto]} alt="" className="h-72 w-full rounded-2xl border border-ink/10 object-cover" />
               {photos.length > 1 && (
                 <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
                   {photos.map((p, i) => (
@@ -1544,7 +1547,7 @@ function VehicleDetailView({
                       key={i}
                       type="button"
                       onClick={() => setActivePhoto(i)}
-                      className={`h-14 w-20 shrink-0 overflow-hidden rounded-lg border ${i === activePhoto ? "border-yellow" : "border-white/10 opacity-70 hover:opacity-100"}`}
+                      className={`h-14 w-20 shrink-0 overflow-hidden rounded-lg border ${i === activePhoto ? "border-yellow" : "border-ink/10 opacity-70 hover:opacity-100"}`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element -- local data: URL photos */}
                       <img src={p} alt="" className="h-full w-full object-cover" />
@@ -1586,7 +1589,7 @@ function VehicleDetailView({
                   ]),
               { icon: "pin" as IconName, label: `${vehicle.distanceKm} ${t("km away", "km bort")}` },
             ].map((spec) => (
-              <div key={spec.label} className="flex flex-col items-center gap-1.5 rounded-xl border border-white/10 bg-card py-3 text-center">
+              <div key={spec.label} className="flex flex-col items-center gap-1.5 rounded-xl border border-ink/10 bg-card py-3 text-center">
                 <Icon name={spec.icon} className="h-5 w-5 text-yellow" />
                 <span className="text-xs text-text-secondary">{spec.label}</span>
               </div>
@@ -1597,7 +1600,7 @@ function VehicleDetailView({
             <h2 className="text-sm font-semibold text-text-primary">{t("Equipment", "Utrustning")}</h2>
             <div className="mt-2 flex flex-wrap gap-2">
               {vehicle.features.map((f) => (
-                <span key={f} className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-text-secondary">{f}</span>
+                <span key={f} className="rounded-full border border-ink/10 bg-ink/[0.03] px-3 py-1.5 text-xs text-text-secondary">{f}</span>
               ))}
             </div>
           </div>
@@ -1626,7 +1629,7 @@ function VehicleDetailView({
                 <DocPhotoRow label={t("Documents", "Dokument")} photos={vehicle.documentPhotos} />
               </div>
             ) : (
-              <div className="mt-2 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+              <div className="mt-2 rounded-xl border border-ink/10 bg-ink/[0.02] p-4">
                 <p className="text-xs text-text-muted">
                   {t("Sent to you once your booking request has been sent to the owner:", "Skickas till dig när din bokningsförfrågan har skickats till ägaren:")}
                 </p>
@@ -1659,7 +1662,7 @@ function VehicleDetailView({
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-2xl border border-white/10 bg-card p-5">
+          <div className="rounded-2xl border border-ink/10 bg-card p-5">
             <h2 className="text-sm font-semibold text-text-primary">{t("Owner", "Ägare")}</h2>
             <div className="mt-3 flex items-center gap-3">
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-yellow text-sm font-bold text-[#08090A]">
@@ -1678,14 +1681,14 @@ function VehicleDetailView({
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-card p-5">
+          <div className="rounded-2xl border border-ink/10 bg-card p-5">
             <h2 className="flex items-center gap-2 text-sm font-semibold text-text-primary"><Icon name="shield" className="h-4 w-4 text-yellow" />{t("Insurance & protection", "Försäkring & skydd")}</h2>
             <p className="mt-2 text-sm text-text-secondary">{vehicle.insurance}</p>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-card p-5">
+          <div className="rounded-2xl border border-ink/10 bg-card p-5">
             <h2 className="text-sm font-semibold text-text-primary">{t("Availability", "Tillgänglighet")}</h2>
-            <p className={`mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium ${vehicle.available ? "bg-yellow/10 text-yellow" : "bg-white/10 text-text-muted"}`}>
+            <p className={`mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium ${vehicle.available ? "bg-yellow/10 text-yellow" : "bg-ink/10 text-text-muted"}`}>
               {vehicle.available
                 ? t("Available now", "Tillgänglig nu")
                 : upcoming
@@ -1705,7 +1708,7 @@ function VehicleDetailView({
       </div>
 
       {!isOwnerPreview && (
-        <div className="fixed inset-x-0 bottom-16 z-30 border-t border-white/10 bg-bg/95 p-4 backdrop-blur lg:hidden">
+        <div className="fixed inset-x-0 bottom-16 z-30 border-t border-ink/10 bg-bg/95 p-4 backdrop-blur lg:hidden">
           <button type="button" onClick={onBook} disabled={!vehicle.available} className="flex w-full items-center justify-center gap-2 rounded-full bg-yellow py-3.5 text-sm font-semibold text-[#08090A] disabled:opacity-40">
             {vehicle.available
               ? `${t("Book vehicle", "Boka fordon")} · ${formatSEK(vehicle.pricePerDay)}/${t("day", "dag")}`
@@ -1724,7 +1727,7 @@ function StepHeader({ step, vehicle }: { step: number; vehicle: Vehicle }) {
   const labels = [t("Dates", "Datum"), t("Price", "Pris"), t("Driver", "Förare"), t("Payment", "Betalning")];
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-card p-3">
+      <div className="flex items-center gap-3 rounded-2xl border border-ink/10 bg-card p-3">
         <VehicleThumb vehicle={vehicle} className="h-14 w-14 shrink-0" compact />
         <div>
           <p className="text-sm font-semibold text-text-primary">{vehicle.brand} {vehicle.model}</p>
@@ -1734,11 +1737,11 @@ function StepHeader({ step, vehicle }: { step: number; vehicle: Vehicle }) {
       <div className="mt-4 flex items-center gap-2">
         {labels.map((label, i) => (
           <div key={label} className="flex flex-1 items-center gap-2">
-            <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${i + 1 <= step ? "bg-yellow text-[#08090A]" : "bg-white/10 text-text-muted"}`}>
+            <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${i + 1 <= step ? "bg-yellow text-[#08090A]" : "bg-ink/10 text-text-muted"}`}>
               {i + 1 < step ? <Icon name="check" className="h-3.5 w-3.5" /> : i + 1}
             </div>
             <span className={`hidden text-xs sm:inline ${i + 1 <= step ? "text-text-primary" : "text-text-muted"}`}>{label}</span>
-            {i < labels.length - 1 && <div className={`h-px flex-1 ${i + 1 < step ? "bg-yellow" : "bg-white/10"}`} />}
+            {i < labels.length - 1 && <div className={`h-px flex-1 ${i + 1 < step ? "bg-yellow" : "bg-ink/10"}`} />}
           </div>
         ))}
       </div>
@@ -1816,20 +1819,20 @@ function BookingFlow({
       {error && <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</div>}
 
       {step === 1 && (
-        <div className="space-y-4 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="space-y-4 rounded-2xl border border-ink/10 bg-card p-5">
           <h2 className="text-base font-semibold text-text-primary">{t("Choose date and time", "Välj datum och tid")}</h2>
           <div className="grid grid-cols-2 gap-3">
             <label className="text-xs text-text-muted">{t("Start date", "Startdatum")}
-              <input type="date" min={todayISO()} value={draft.startDate} onChange={(e) => patch({ startDate: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
+              <input type="date" min={todayISO()} value={draft.startDate} onChange={(e) => patch({ startDate: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
             </label>
             <label className="text-xs text-text-muted">{t("End date", "Slutdatum")}
-              <input type="date" min={draft.startDate || todayISO()} value={draft.endDate} onChange={(e) => patch({ endDate: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
+              <input type="date" min={draft.startDate || todayISO()} value={draft.endDate} onChange={(e) => patch({ endDate: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
             </label>
             <label className="text-xs text-text-muted">{t("Pickup time", "Upphämtningstid")}
-              <input type="time" value={draft.pickupTime} onChange={(e) => patch({ pickupTime: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
+              <input type="time" value={draft.pickupTime} onChange={(e) => patch({ pickupTime: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
             </label>
             <label className="text-xs text-text-muted">{t("Return time", "Återlämningstid")}
-              <input type="time" value={draft.returnTime} onChange={(e) => patch({ returnTime: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
+              <input type="time" value={draft.returnTime} onChange={(e) => patch({ returnTime: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
             </label>
           </div>
           <p className="text-sm text-text-secondary">{nights} {t(nights === 1 ? "night selected" : "nights selected", "dygn valda")}</p>
@@ -1837,7 +1840,7 @@ function BookingFlow({
       )}
 
       {step === 2 && (
-        <div className="space-y-4 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="space-y-4 rounded-2xl border border-ink/10 bg-card p-5">
           <h2 className="text-base font-semibold text-text-primary">{t("Price breakdown", "Prisberäkning")}</h2>
           <div className="space-y-2.5 text-sm">
             <div className="flex justify-between text-text-secondary">
@@ -1851,27 +1854,27 @@ function BookingFlow({
             </div>
             <div className="flex justify-between text-text-secondary"><span>{t("Service fee", "Serviceavgift")}</span><span className="text-text-primary">{formatSEK(SERVICE_FEE)}</span></div>
             <div className="flex justify-between text-text-secondary"><span>{t("Protection fee", "Skyddsavgift")} ({nights} {t("nights", "dygn")})</span><span className="text-text-primary">{formatSEK(protectionFee)}</span></div>
-            <div className="flex justify-between border-t border-white/10 pt-2.5 text-base font-semibold text-text-primary"><span>{t("Total", "Totalt")}</span><span>{formatSEK(totalPrice)}</span></div>
+            <div className="flex justify-between border-t border-ink/10 pt-2.5 text-base font-semibold text-text-primary"><span>{t("Total", "Totalt")}</span><span>{formatSEK(totalPrice)}</span></div>
           </div>
           <p className="text-xs text-text-muted">{t("Preliminary calculation. No payment is taken until step 4.", "Preliminär beräkning. Ingen betalning genomförs förrän i steg 4.")}</p>
         </div>
       )}
 
       {step === 3 && (
-        <div className="space-y-4 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="space-y-4 rounded-2xl border border-ink/10 bg-card p-5">
           <h2 className="text-base font-semibold text-text-primary">{t("Driver details", "Föraruppgifter")}</h2>
           <div className="grid grid-cols-2 gap-3">
             <label className="text-xs text-text-muted">{t("First name", "Förnamn")}
-              <input value={draft.firstName} onChange={(e) => patch({ firstName: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
+              <input value={draft.firstName} onChange={(e) => patch({ firstName: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
             </label>
             <label className="text-xs text-text-muted">{t("Last name", "Efternamn")}
-              <input value={draft.lastName} onChange={(e) => patch({ lastName: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
+              <input value={draft.lastName} onChange={(e) => patch({ lastName: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
             </label>
           </div>
           <label className="block text-xs text-text-muted">{t("Phone number", "Telefonnummer")}
-            <input value={draft.phone} onChange={(e) => patch({ phone: e.target.value })} placeholder="070-123 45 67" className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
+            <input value={draft.phone} onChange={(e) => patch({ phone: e.target.value })} placeholder="070-123 45 67" className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
           </label>
-          <div className="rounded-lg border border-white/10 bg-white/[0.02] px-3.5 py-2.5 text-sm text-text-secondary">
+          <div className="rounded-lg border border-ink/10 bg-ink/[0.02] px-3.5 py-2.5 text-sm text-text-secondary">
             <p>{t("Licence status", "Körkortsstatus")}: <span className="font-medium text-yellow">{licenseLabel(renterLicenseStatus, lang)}</span></p>
             <p className="mt-1 text-xs">
               {t("This vehicle requires", "Detta fordon kräver")} {Math.max(1, vehicle.minLicenseYears ?? 1)}+ {t("years with a licence", "år med körkort")} · {t("You have", "Du har")} {renterLicenseYears} {t(renterLicenseYears === 1 ? "year" : "years", "år")}
@@ -1888,10 +1891,10 @@ function BookingFlow({
       )}
 
       {step === 4 && (
-        <div className="space-y-4 rounded-2xl border border-white/10 bg-card p-5">
+        <div className="space-y-4 rounded-2xl border border-ink/10 bg-card p-5">
           <h2 className="flex items-center gap-2 text-base font-semibold text-text-primary"><Icon name="card" className="h-4 w-4 text-yellow" />{t("Payment (simulated)", "Betalning (simulerad)")}</h2>
           <label className="block text-xs text-text-muted">{t("Cardholder", "Kortinnehavare")}
-            <input value={draft.cardName} onChange={(e) => patch({ cardName: e.target.value })} placeholder={t("Name on card", "Namn på kortet")} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
+            <input value={draft.cardName} onChange={(e) => patch({ cardName: e.target.value })} placeholder={t("Name on card", "Namn på kortet")} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
           </label>
           <label className="block text-xs text-text-muted">{t("Card number", "Kortnummer")}
             <input
@@ -1902,7 +1905,7 @@ function BookingFlow({
               }}
               placeholder="1234 5678 9012 3456"
               inputMode="numeric"
-              className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none"
             />
           </label>
           <div className="grid grid-cols-2 gap-3">
@@ -1915,20 +1918,20 @@ function BookingFlow({
                 }}
                 placeholder="08/29"
                 inputMode="numeric"
-                className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none"
               />
             </label>
             <label className="text-xs text-text-muted">CVC
-              <input value={draft.cvc} onChange={(e) => patch({ cvc: e.target.value.replace(/\D/g, "").slice(0, 3) })} placeholder="123" inputMode="numeric" className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
+              <input value={draft.cvc} onChange={(e) => patch({ cvc: e.target.value.replace(/\D/g, "").slice(0, 3) })} placeholder="123" inputMode="numeric" className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
             </label>
           </div>
           <p className="flex items-center gap-1.5 text-xs text-text-muted"><Icon name="shield" className="h-3.5 w-3.5" />{t("This is a simulated payment. No real card details are processed.", "Detta är en simulerad betalning. Inga riktiga kortuppgifter behandlas.")}</p>
-          <div className="flex justify-between border-t border-white/10 pt-3 text-sm font-semibold text-text-primary"><span>{t("Total to pay", "Att betala")}</span><span>{formatSEK(totalPrice)}</span></div>
+          <div className="flex justify-between border-t border-ink/10 pt-3 text-sm font-semibold text-text-primary"><span>{t("Total to pay", "Att betala")}</span><span>{formatSEK(totalPrice)}</span></div>
         </div>
       )}
 
       <div className="mt-5 flex gap-3">
-        <button type="button" onClick={back} className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.03] px-5 py-3 text-sm font-medium text-text-primary hover:border-white/25">
+        <button type="button" onClick={back} className="flex items-center gap-1.5 rounded-full border border-ink/15 bg-ink/[0.03] px-5 py-3 text-sm font-medium text-text-primary hover:border-ink/25">
           <Icon name="chevronLeft" className="h-4 w-4" />{t("Back", "Tillbaka")}
         </button>
         <button type="button" onClick={next} disabled={submitting} className="flex-1 rounded-full bg-yellow py-3 text-sm font-semibold text-[#08090A] transition-transform hover:-translate-y-0.5 disabled:opacity-60">
@@ -1957,7 +1960,7 @@ function ConfirmationView({ booking, vehicle, onDone, onHome }: { booking: Booki
       )}
       <p className="mt-1 text-sm text-text-muted">{t("Booking number", "Bokningsnummer")} {booking.bookingNumber}</p>
 
-      <div className="mt-6 space-y-3 rounded-2xl border border-white/10 bg-card p-5 text-left">
+      <div className="mt-6 space-y-3 rounded-2xl border border-ink/10 bg-card p-5 text-left">
         <div className="flex items-center gap-3">
           <VehicleThumb vehicle={vehicle} className="h-14 w-14 shrink-0" compact />
           <div>
@@ -1965,7 +1968,7 @@ function ConfirmationView({ booking, vehicle, onDone, onHome }: { booking: Booki
             <p className="text-xs text-text-muted">{vehicle.location}</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3 border-t border-white/10 pt-3 text-sm">
+        <div className="grid grid-cols-2 gap-3 border-t border-ink/10 pt-3 text-sm">
           <div><p className="text-text-muted">{t("Start date", "Startdatum")}</p><p className="text-text-primary">{booking.startDate}</p></div>
           <div><p className="text-text-muted">{t("End date", "Slutdatum")}</p><p className="text-text-primary">{booking.endDate}</p></div>
           <div><p className="text-text-muted">{t("Pickup location", "Upphämtningsplats")}</p><p className="text-text-primary">{vehicle.location}</p></div>
@@ -1974,7 +1977,7 @@ function ConfirmationView({ booking, vehicle, onDone, onHome }: { booking: Booki
       </div>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <button type="button" onClick={onHome} className="flex-1 rounded-full border border-white/15 bg-white/[0.03] py-3 text-sm font-medium text-text-primary hover:border-white/25">{t("To the homepage", "Till startsidan")}</button>
+        <button type="button" onClick={onHome} className="flex-1 rounded-full border border-ink/15 bg-ink/[0.03] py-3 text-sm font-medium text-text-primary hover:border-ink/25">{t("To the homepage", "Till startsidan")}</button>
         <button type="button" onClick={onDone} className="flex-1 rounded-full bg-yellow py-3 text-sm font-semibold text-[#08090A] transition-transform hover:-translate-y-0.5">{t("To my bookings", "Till mina bokningar")}</button>
       </div>
     </div>
@@ -2001,9 +2004,9 @@ function AuthView({
         <Image src={withBasePath("/assets/movanta-logo.png")} alt="Movanta" width={512} height={512} className="h-12 w-12 rounded-xl" />
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-card p-6 shadow-[0_20px_50px_-30px_rgba(0,0,0,0.8)]">
+      <div className="rounded-2xl border border-ink/10 bg-card p-6 shadow-[0_20px_50px_-30px_rgba(0,0,0,0.8)]">
         {mode !== "forgot" && (
-          <div className="mb-5 flex rounded-full border border-white/10 bg-white/[0.03] p-1">
+          <div className="mb-5 flex rounded-full border border-ink/10 bg-ink/[0.03] p-1">
             <button type="button" onClick={() => setMode("login")} className={`flex-1 rounded-full py-2 text-sm font-medium ${mode === "login" ? "bg-yellow text-[#08090A]" : "text-text-secondary"}`}>{t("Log in", "Logga in")}</button>
             <button type="button" onClick={() => setMode("register")} className={`flex-1 rounded-full py-2 text-sm font-medium ${mode === "register" ? "bg-yellow text-[#08090A]" : "text-text-secondary"}`}>{t("Create account", "Skapa konto")}</button>
           </div>
@@ -2036,11 +2039,11 @@ function LoginForm({ onLogin, onForgot }: { onLogin: (email: string, password: s
     <form onSubmit={submit} className="space-y-3.5">
       {error && <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3.5 py-2.5 text-xs text-red-300">{error}</div>}
       <label className="block text-xs text-text-muted">{t("Email", "E-post")}
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" placeholder={t("you@example.com", "du@exempel.se")} />
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" placeholder={t("you@example.com", "du@exempel.se")} />
       </label>
       <label className="block text-xs text-text-muted">{t("Password", "Lösenord")}
         <div className="relative mt-1">
-          <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 pr-10 text-sm text-text-primary focus:outline-none" placeholder="••••••••" />
+          <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 pr-10 text-sm text-text-primary focus:outline-none" placeholder="••••••••" />
           <button type="button" onClick={() => setShowPassword((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary" aria-label={t("Show password", "Visa lösenord")}>
             <Icon name={showPassword ? "eyeOff" : "eye"} className="h-4 w-4" />
           </button>
@@ -2054,7 +2057,7 @@ function LoginForm({ onLogin, onForgot }: { onLogin: (email: string, password: s
         <button type="button" onClick={onForgot} className="font-medium text-yellow hover:underline">{t("Forgot password?", "Glömt lösenord?")}</button>
       </div>
       <button type="submit" className="w-full rounded-full bg-yellow py-3 text-sm font-semibold text-[#08090A] transition-transform hover:-translate-y-0.5">{t("Log in", "Logga in")}</button>
-      <button type="button" onClick={() => onLogin("demo@movanta.se", "demo1234", true)} className="w-full rounded-full border border-white/15 bg-white/[0.03] py-3 text-sm font-medium text-text-primary hover:border-white/25">
+      <button type="button" onClick={() => onLogin("demo@movanta.se", "demo1234", true)} className="w-full rounded-full border border-ink/15 bg-ink/[0.03] py-3 text-sm font-medium text-text-primary hover:border-ink/25">
         {t("Log in as demo", "Logga in som demo")}
       </button>
     </form>
@@ -2067,7 +2070,7 @@ function RegisterForm({ onRegister }: { onRegister: (payload: { firstName: strin
   const [form, setForm] = useState({ email: "", password: "", firstName: "", lastName: "", phone: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const inputClass = "mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none";
+  const inputClass = "mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none";
 
   function nextFromAccount(e: React.FormEvent) {
     e.preventDefault();
@@ -2096,11 +2099,11 @@ function RegisterForm({ onRegister }: { onRegister: (payload: { firstName: strin
           const n = (i + 1) as 1 | 2;
           return (
             <div key={label} className="flex items-center gap-3">
-              {i > 0 && <span className="h-px w-8 bg-white/15" />}
+              {i > 0 && <span className="h-px w-8 bg-ink/15" />}
               <div className="flex items-center gap-2">
                 <span
                   className={`flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold ${
-                    step === n ? "bg-yellow text-[#08090A]" : step > n ? "bg-yellow/20 text-yellow" : "bg-white/10 text-text-muted"
+                    step === n ? "bg-yellow text-[#08090A]" : step > n ? "bg-yellow/20 text-yellow" : "bg-ink/10 text-text-muted"
                   }`}
                 >
                   {step > n ? "✓" : n}
@@ -2120,7 +2123,7 @@ function RegisterForm({ onRegister }: { onRegister: (payload: { firstName: strin
           </label>
           <label className="block text-xs text-text-muted">{t("Password", "Lösenord")}
             <div className="relative mt-1">
-              <input type={showPassword ? "text" : "password"} autoComplete="new-password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 pr-10 text-sm text-text-primary focus:outline-none" placeholder={t("At least 6 characters", "Minst 6 tecken")} />
+              <input type={showPassword ? "text" : "password"} autoComplete="new-password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 pr-10 text-sm text-text-primary focus:outline-none" placeholder={t("At least 6 characters", "Minst 6 tecken")} />
               <button type="button" onClick={() => setShowPassword((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary" aria-label={t("Show password", "Visa lösenord")}>
                 <Icon name={showPassword ? "eyeOff" : "eye"} className="h-4 w-4" />
               </button>
@@ -2170,7 +2173,7 @@ function ForgotForm({ onBack }: { onBack: () => void }) {
     <form onSubmit={(e) => { e.preventDefault(); if (email) setSent(true); }} className="space-y-3.5">
       <p className="text-sm text-text-secondary">{t("Enter your email address and we'll send instructions to reset your password. (Prototype — no email is actually sent.)", "Ange din e-postadress så skickar vi instruktioner för att återställa lösenordet. (Prototyp — inget e-postmeddelande skickas.)")}</p>
       <label className="block text-xs text-text-muted">{t("Email", "E-post")}
-        <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" placeholder={t("you@example.com", "du@exempel.se")} />
+        <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" placeholder={t("you@example.com", "du@exempel.se")} />
       </label>
       <button type="submit" className="w-full rounded-full bg-yellow py-3 text-sm font-semibold text-[#08090A] transition-transform hover:-translate-y-0.5">{t("Send instructions", "Skicka instruktioner")}</button>
       <button type="button" onClick={onBack} className="w-full text-center text-sm font-medium text-text-secondary hover:text-text-primary">{t("Back to login", "Tillbaka till inloggning")}</button>
@@ -2200,7 +2203,7 @@ function ProfileView({
   const memberSince = new Date(user.createdAt).toLocaleDateString(lang === "sv" ? "sv-SE" : "en-GB", { month: "long", year: "numeric" });
   return (
     <div className="mx-auto max-w-lg pb-10">
-      <div className="rounded-2xl border border-white/10 bg-card p-6 text-center">
+      <div className="rounded-2xl border border-ink/10 bg-card p-6 text-center">
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-yellow text-lg font-bold text-[#08090A]">
           {user.firstName[0]}{user.lastName[0]}
         </span>
@@ -2208,13 +2211,13 @@ function ProfileView({
         <p className="text-sm text-text-muted">{user.email}</p>
         <p className="text-sm text-text-muted">{user.phone}</p>
         <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-          <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${user.verified ? "bg-yellow/10 text-yellow" : "bg-white/10 text-text-muted"}`}>
+          <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${user.verified ? "bg-yellow/10 text-yellow" : "bg-ink/10 text-text-muted"}`}>
             <Icon name="shield" className="h-3 w-3" />{user.verified ? t("Verified user", "Verifierad användare") : t("Not verified", "Ej verifierad")}
           </span>
-          <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-medium text-text-secondary">{t("Licence", "Körkort")}: {licenseLabel(user.licenseStatus, lang)}</span>
+          <span className="rounded-full bg-ink/10 px-2.5 py-1 text-xs font-medium text-text-secondary">{t("Licence", "Körkort")}: {licenseLabel(user.licenseStatus, lang)}</span>
         </div>
         <p className="mt-3 text-xs text-text-muted">{t("Member since", "Medlem sedan")} {memberSince}</p>
-        <button type="button" onClick={onEdit} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] py-2.5 text-sm font-medium text-text-primary hover:border-white/25">
+        <button type="button" onClick={onEdit} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-ink/15 bg-ink/[0.03] py-2.5 text-sm font-medium text-text-primary hover:border-ink/25">
           <Icon name="edit" className="h-4 w-4" />{t("Edit profile", "Redigera profil")}
         </button>
       </div>
@@ -2258,9 +2261,9 @@ function ProfileView({
               }]
             : []),
         ].map((item) => (
-          <button key={item.label} type="button" onClick={item.onClick} className="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-card px-4 py-3.5 text-left hover:border-white/20">
+          <button key={item.label} type="button" onClick={item.onClick} className="flex w-full items-center justify-between rounded-2xl border border-ink/10 bg-card px-4 py-3.5 text-left hover:border-ink/20">
             <span className="flex items-center gap-3">
-              <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.06] text-yellow">
+              <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-ink/[0.06] text-yellow">
                 <Icon name={item.icon} className="h-4 w-4" />
                 {item.badge > 0 && <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-orange-400" />}
               </span>
@@ -2272,7 +2275,7 @@ function ProfileView({
             <Icon name="chevronRight" className="h-4 w-4 text-text-muted" />
           </button>
         ))}
-        <button type="button" onClick={onLogout} className="flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-card px-4 py-3.5 text-left text-red-300 hover:border-red-500/30">
+        <button type="button" onClick={onLogout} className="flex w-full items-center gap-3 rounded-2xl border border-ink/10 bg-card px-4 py-3.5 text-left text-red-300 hover:border-red-500/30">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-red-500/10"><Icon name="logout" className="h-4 w-4" /></span>
           <span className="text-sm font-medium">{t("Log out", "Logga ut")}</span>
         </button>
@@ -2301,26 +2304,26 @@ function ProfileEditView({ user, onSave, onCancel }: { user: User; onSave: (patc
   return (
     <div className="mx-auto max-w-lg pb-10">
       <h1 className="mb-4 text-xl font-semibold text-text-primary">{t("Edit profile", "Redigera profil")}</h1>
-      <form onSubmit={submit} className="space-y-3.5 rounded-2xl border border-white/10 bg-card p-6">
+      <form onSubmit={submit} className="space-y-3.5 rounded-2xl border border-ink/10 bg-card p-6">
         <div className="grid grid-cols-2 gap-3">
           <label className="text-xs text-text-muted">{t("First name", "Förnamn")}
-            <input value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
+            <input value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
           </label>
           <label className="text-xs text-text-muted">{t("Last name", "Efternamn")}
-            <input value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
+            <input value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
           </label>
         </div>
         <label className="block text-xs text-text-muted">{t("Phone number", "Telefonnummer")}
-          <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
+          <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
         </label>
         <label className="block text-xs text-text-muted">{t("Email", "E-post")}
-          <input value={user.email} disabled className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.02] px-3.5 py-2.5 text-sm text-text-muted" />
+          <input value={user.email} disabled className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.02] px-3.5 py-2.5 text-sm text-text-muted" />
         </label>
         <label className="block text-xs text-text-muted">{t("Years with driving licence", "Antal år med körkort")}
-          <input type="number" min={0} value={form.licenseYears} onChange={(e) => setForm({ ...form, licenseYears: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
+          <input type="number" min={0} value={form.licenseYears} onChange={(e) => setForm({ ...form, licenseYears: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
         </label>
 
-        <div className="border-t border-white/10 pt-3.5">
+        <div className="border-t border-ink/10 pt-3.5">
           <label className="flex items-center gap-2 text-sm text-text-secondary">
             <input type="checkbox" checked={hasCompany} onChange={(e) => setHasCompany(e.target.checked)} className="h-4 w-4 accent-yellow" />
             {t("I have a company profile for listing vehicles", "Jag har en företagsprofil för att lista fordon")}
@@ -2328,13 +2331,13 @@ function ProfileEditView({ user, onSave, onCancel }: { user: User; onSave: (patc
           {hasCompany && (
             <div className="mt-3 space-y-3">
               <label className="block text-xs text-text-muted">{t("Company name", "Företagsnamn")}
-                <input value={company.name} onChange={(e) => setCompany({ ...company, name: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
+                <input value={company.name} onChange={(e) => setCompany({ ...company, name: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
               </label>
               <label className="block text-xs text-text-muted">{t("Organisation number", "Organisationsnummer")}
-                <input value={company.orgNumber} onChange={(e) => setCompany({ ...company, orgNumber: e.target.value })} placeholder="559xxx-xxxx" className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
+                <input value={company.orgNumber} onChange={(e) => setCompany({ ...company, orgNumber: e.target.value })} placeholder="559xxx-xxxx" className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
               </label>
               <label className="block text-xs text-text-muted">{t("Public company description", "Publik företagsbeskrivning")}
-                <textarea rows={2} value={company.description} onChange={(e) => setCompany({ ...company, description: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
+                <textarea rows={2} value={company.description} onChange={(e) => setCompany({ ...company, description: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
               </label>
               <p className="text-[11px] text-text-muted">
                 {t(
@@ -2347,7 +2350,7 @@ function ProfileEditView({ user, onSave, onCancel }: { user: User; onSave: (patc
         </div>
 
         <div className="flex gap-3 pt-2">
-          <button type="button" onClick={onCancel} className="flex-1 rounded-full border border-white/15 bg-white/[0.03] py-3 text-sm font-medium text-text-primary hover:border-white/25">{t("Cancel", "Avbryt")}</button>
+          <button type="button" onClick={onCancel} className="flex-1 rounded-full border border-ink/15 bg-ink/[0.03] py-3 text-sm font-medium text-text-primary hover:border-ink/25">{t("Cancel", "Avbryt")}</button>
           <button type="submit" className="flex-1 rounded-full bg-yellow py-3 text-sm font-semibold text-[#08090A] transition-transform hover:-translate-y-0.5">{t("Save", "Spara")}</button>
         </div>
       </form>
@@ -2369,7 +2372,7 @@ function LicensePhotoSlot({
     <div>
       <p className="mb-1.5 text-xs font-medium text-text-secondary">{label}</p>
       {photo ? (
-        <div className="relative h-32 w-full overflow-hidden rounded-lg border border-white/10">
+        <div className="relative h-32 w-full overflow-hidden rounded-lg border border-ink/10">
           {/* eslint-disable-next-line @next/next/no-img-element -- local data: URL photo */}
           <img src={photo} alt="" className="h-full w-full object-cover" />
           <button type="button" onClick={onRemove} className="absolute right-1 top-1 rounded-full bg-black/60 p-1 text-white">
@@ -2377,7 +2380,7 @@ function LicensePhotoSlot({
           </button>
         </div>
       ) : (
-        <label className="flex h-32 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-white/20 text-xs text-text-muted hover:border-white/40">
+        <label className="flex h-32 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-ink/20 text-xs text-text-muted hover:border-ink/40">
           <Icon name="camera" className="h-5 w-5" />
           {processing ? t("Processing…", "Bearbetar…") : t("Add photo", "Lägg till foto")}
           <input
@@ -2461,7 +2464,7 @@ function LicenseVerificationView({
   }
 
   const licenseStatusTone =
-    user.licenseStatus === "Verifierat" ? "bg-yellow/10 text-yellow" : user.licenseStatus === "Väntar" ? "bg-orange-500/10 text-orange-300" : "bg-white/10 text-text-muted";
+    user.licenseStatus === "Verifierat" ? "bg-yellow/10 text-yellow" : user.licenseStatus === "Väntar" ? "bg-orange-500/10 text-orange-300" : "bg-ink/10 text-text-muted";
 
   return (
     <div className="mx-auto max-w-lg pb-10">
@@ -2505,7 +2508,7 @@ function LicenseVerificationView({
       )}
 
       {!locked && (
-        <div className="rounded-2xl border border-white/10 bg-card p-5">
+        <div className="rounded-2xl border border-ink/10 bg-card p-5">
           {errors.length > 0 && (
             <div className="mb-3 space-y-1 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
               {errors.map((e, i) => <p key={i}>{e}</p>)}
@@ -2534,7 +2537,7 @@ function LicenseVerificationView({
               min={0}
               value={licenseYears}
               onChange={(e) => setLicenseYears(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none"
               placeholder={t("e.g. 5", "t.ex. 5")}
             />
             <span className="mt-1 block text-[11px] text-text-muted">{t("Some vehicles require a minimum number of licence years.", "Vissa fordon kräver ett minsta antal år med körkort.")}</span>
@@ -2555,7 +2558,7 @@ function LicenseVerificationView({
           <h2 className="mb-2 text-sm font-semibold text-text-primary">{t("Submission history", "Tidigare inskick")}</h2>
           <div className="space-y-2">
             {requests.map((r) => (
-              <div key={r.id} className="flex items-center justify-between rounded-xl border border-white/10 bg-card px-4 py-3 text-sm">
+              <div key={r.id} className="flex items-center justify-between rounded-xl border border-ink/10 bg-card px-4 py-3 text-sm">
                 <span className="text-text-secondary">{new Date(r.submittedAt).toLocaleDateString(lang === "sv" ? "sv-SE" : "en-GB")}</span>
                 <span
                   className={`rounded-full px-2.5 py-1 text-xs font-medium ${
@@ -2578,7 +2581,7 @@ function statusTone(status: Booking["status"]) {
     case "Väntar": return "bg-orange-500/10 text-orange-300";
     case "Kommande": return "bg-yellow/10 text-yellow";
     case "Aktiv": return "bg-emerald-500/10 text-emerald-300";
-    case "Avslutad": return "bg-white/10 text-text-muted";
+    case "Avslutad": return "bg-ink/10 text-text-muted";
     case "Avbokad": return "bg-red-500/10 text-red-300";
   }
 }
@@ -2608,14 +2611,14 @@ function BookingsView({
   return (
     <div className="mx-auto max-w-2xl pb-10">
       <h1 className="mb-4 text-xl font-semibold text-text-primary">{t("My bookings", "Mina bokningar")}</h1>
-      <div className="mb-5 flex rounded-full border border-white/10 bg-white/[0.03] p-1">
+      <div className="mb-5 flex rounded-full border border-ink/10 bg-ink/[0.03] p-1">
         {(["Kommande", "Aktiv", "Tidigare"] as const).map((tb) => (
           <button key={tb} type="button" onClick={() => setTab(tb)} className={`flex-1 rounded-full py-2 text-sm font-medium ${tab === tb ? "bg-yellow text-[#08090A]" : "text-text-secondary"}`}>{tabLabel(tb)}</button>
         ))}
       </div>
 
       {shown.length === 0 ? (
-        <div className="rounded-2xl border border-white/10 bg-card p-10 text-center">
+        <div className="rounded-2xl border border-ink/10 bg-card p-10 text-center">
           <p className="text-sm text-text-secondary">{t("No bookings here yet.", "Inga bokningar här än.")}</p>
           <button type="button" onClick={onExplore} className="mt-3 text-sm font-medium text-yellow hover:underline">{t("Explore vehicles", "Utforska fordon")}</button>
         </div>
@@ -2626,7 +2629,7 @@ function BookingsView({
             if (!v) return null;
             const lv = localizeVehicle(v, lang);
             return (
-              <div key={b.id} className="rounded-2xl border border-white/10 bg-card p-4">
+              <div key={b.id} className="rounded-2xl border border-ink/10 bg-card p-4">
                 <div className="flex items-center gap-3">
                   <VehicleThumb vehicle={lv} className="h-14 w-14 shrink-0" compact />
                   <div className="min-w-0 flex-1">
@@ -2637,10 +2640,10 @@ function BookingsView({
                     <p className="text-xs text-text-muted">{b.startDate} – {b.endDate} · {b.bookingNumber}</p>
                   </div>
                 </div>
-                <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
+                <div className="mt-3 flex items-center justify-between border-t border-ink/10 pt-3">
                   <span className="text-sm font-semibold text-text-primary">{formatSEK(b.totalPrice)}</span>
                   <div className="flex flex-wrap justify-end gap-2">
-                    <button type="button" onClick={() => setDetail(b)} className="rounded-full border border-white/15 bg-white/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary hover:border-white/25">{t("View details", "Visa detaljer")}</button>
+                    <button type="button" onClick={() => setDetail(b)} className="rounded-full border border-ink/15 bg-ink/[0.03] px-3.5 py-1.5 text-xs font-medium text-text-primary hover:border-ink/25">{t("View details", "Visa detaljer")}</button>
                     {b.ownerId && (b.status === "Kommande" || b.status === "Aktiv") && (
                       <button type="button" onClick={() => onOpenRoom(b.id)} className="flex items-center gap-1.5 rounded-full border border-yellow/30 bg-yellow/10 px-3.5 py-1.5 text-xs font-medium text-yellow hover:border-yellow/50">
                         <Icon name="chat" className="h-3.5 w-3.5" />{t("Contract & chat", "Avtal & chatt")}
@@ -2661,7 +2664,7 @@ function BookingsView({
 
       {detail && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" onClick={() => setDetail(null)}>
-          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md rounded-t-2xl border border-white/10 bg-card p-6 sm:rounded-2xl">
+          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md rounded-t-2xl border border-ink/10 bg-card p-6 sm:rounded-2xl">
             <div className="flex items-center justify-between">
               <h2 className="text-base font-semibold text-text-primary">{t("Booking details", "Bokningsdetaljer")}</h2>
               <button type="button" onClick={() => setDetail(null)} className="text-text-muted hover:text-text-primary"><Icon name="close" className="h-5 w-5" /></button>
@@ -2671,10 +2674,10 @@ function BookingsView({
               <div className="flex justify-between text-text-secondary"><span>{t("Status", "Status")}</span><span className="text-text-primary">{statusLabel(detail.status, lang)}</span></div>
               <div className="flex justify-between text-text-secondary"><span>{t("Dates", "Datum")}</span><span className="text-text-primary">{detail.startDate} – {detail.endDate}</span></div>
               <div className="flex justify-between text-text-secondary"><span>{t("Times", "Tider")}</span><span className="text-text-primary">{detail.pickupTime} – {detail.returnTime}</span></div>
-              <div className="flex justify-between border-t border-white/10 pt-2 text-text-secondary"><span>{t("Rental price", "Hyrespris")}</span><span className="text-text-primary">{formatSEK(detail.rentalPrice)}</span></div>
+              <div className="flex justify-between border-t border-ink/10 pt-2 text-text-secondary"><span>{t("Rental price", "Hyrespris")}</span><span className="text-text-primary">{formatSEK(detail.rentalPrice)}</span></div>
               <div className="flex justify-between text-text-secondary"><span>{t("Service fee", "Serviceavgift")}</span><span className="text-text-primary">{formatSEK(detail.serviceFee)}</span></div>
               <div className="flex justify-between text-text-secondary"><span>{t("Protection fee", "Skyddsavgift")}</span><span className="text-text-primary">{formatSEK(detail.protectionFee)}</span></div>
-              <div className="flex justify-between border-t border-white/10 pt-2 text-base font-semibold text-text-primary"><span>{t("Total", "Totalt")}</span><span>{formatSEK(detail.totalPrice)}</span></div>
+              <div className="flex justify-between border-t border-ink/10 pt-2 text-base font-semibold text-text-primary"><span>{t("Total", "Totalt")}</span><span>{formatSEK(detail.totalPrice)}</span></div>
             </div>
             {detail.contractPdf && (
               <a
@@ -2718,7 +2721,7 @@ function PaymentsView({ onBack }: { onBack: () => void }) {
       <p className="mb-4 text-xs text-text-muted">{t("Prototype only — no real card details are stored.", "Endast prototyp — inga riktiga kortuppgifter lagras.")}</p>
       <div className="space-y-2">
         {cards.map((c) => (
-          <div key={c.id} className="flex items-center justify-between rounded-2xl border border-white/10 bg-card px-4 py-3.5">
+          <div key={c.id} className="flex items-center justify-between rounded-2xl border border-ink/10 bg-card px-4 py-3.5">
             <span className="flex items-center gap-3 text-sm text-text-primary"><Icon name="card" className="h-5 w-5 text-yellow" />{c.label} <span className="text-xs text-text-muted">exp {c.exp}</span></span>
             <button type="button" onClick={() => setCards((cs) => cs.filter((x) => x.id !== c.id))} className="text-text-muted hover:text-red-300"><Icon name="trash" className="h-4 w-4" /></button>
           </div>
@@ -2726,20 +2729,20 @@ function PaymentsView({ onBack }: { onBack: () => void }) {
       </div>
 
       {adding ? (
-        <form onSubmit={addCard} className="mt-4 space-y-3 rounded-2xl border border-white/10 bg-card p-5">
+        <form onSubmit={addCard} className="mt-4 space-y-3 rounded-2xl border border-ink/10 bg-card p-5">
           <label className="block text-xs text-text-muted">{t("Name on card", "Namn på kortet")}
-            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
+            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
           </label>
           <label className="block text-xs text-text-muted">{t("Card number", "Kortnummer")}
-            <input value={form.number} onChange={(e) => setForm({ ...form, number: e.target.value })} placeholder="1234 5678 9012 3456" className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
+            <input value={form.number} onChange={(e) => setForm({ ...form, number: e.target.value })} placeholder="1234 5678 9012 3456" className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
           </label>
           <div className="flex gap-3">
-            <button type="button" onClick={() => setAdding(false)} className="flex-1 rounded-full border border-white/15 bg-white/[0.03] py-2.5 text-sm font-medium text-text-primary">{t("Cancel", "Avbryt")}</button>
+            <button type="button" onClick={() => setAdding(false)} className="flex-1 rounded-full border border-ink/15 bg-ink/[0.03] py-2.5 text-sm font-medium text-text-primary">{t("Cancel", "Avbryt")}</button>
             <button type="submit" className="flex-1 rounded-full bg-yellow py-2.5 text-sm font-semibold text-[#08090A]">{t("Add", "Lägg till")}</button>
           </div>
         </form>
       ) : (
-        <button type="button" onClick={() => setAdding(true)} className="mt-4 w-full rounded-full border border-white/15 bg-white/[0.03] py-3 text-sm font-medium text-text-primary hover:border-white/25">+ {t("Add payment method", "Lägg till betalningsmetod")}</button>
+        <button type="button" onClick={() => setAdding(true)} className="mt-4 w-full rounded-full border border-ink/15 bg-ink/[0.03] py-3 text-sm font-medium text-text-primary hover:border-ink/25">+ {t("Add payment method", "Lägg till betalningsmetod")}</button>
       )}
     </div>
   );
@@ -2750,7 +2753,7 @@ function Switch({ checked, onChange }: { checked: boolean; onChange: (v: boolean
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${checked ? "bg-yellow" : "bg-white/15"}`}
+      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${checked ? "bg-yellow" : "bg-ink/15"}`}
       aria-pressed={checked}
     >
       <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-[#08090A] transition-transform ${checked ? "translate-x-5" : "translate-x-0.5"}`} />
@@ -2769,21 +2772,21 @@ function SettingsView({ onBack }: { onBack: () => void }) {
       <button type="button" onClick={onBack} className="mb-4 flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary"><Icon name="chevronLeft" className="h-4 w-4" />{t("Back", "Tillbaka")}</button>
       <h1 className="mb-4 text-xl font-semibold text-text-primary">{t("Settings", "Inställningar")}</h1>
       <div className="space-y-2">
-        <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-card px-4 py-3.5">
+        <div className="flex items-center justify-between rounded-2xl border border-ink/10 bg-card px-4 py-3.5">
           <div><p className="text-sm text-text-primary">{t("Email notifications", "E-postnotiser")}</p><p className="text-xs text-text-muted">{t("Booking confirmations and updates", "Bokningsbekräftelser och uppdateringar")}</p></div>
           <Switch checked={emailNotif} onChange={setEmailNotif} />
         </div>
-        <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-card px-4 py-3.5">
+        <div className="flex items-center justify-between rounded-2xl border border-ink/10 bg-card px-4 py-3.5">
           <div><p className="text-sm text-text-primary">{t("Push notifications", "Push-notiser")}</p><p className="text-xs text-text-muted">{t("Reminders about pickup and return", "Påminnelser om upphämtning och återlämning")}</p></div>
           <Switch checked={pushNotif} onChange={setPushNotif} />
         </div>
-        <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-card px-4 py-3.5">
+        <div className="flex items-center justify-between rounded-2xl border border-ink/10 bg-card px-4 py-3.5">
           <div><p className="text-sm text-text-primary">{t("News and offers", "Nyheter och erbjudanden")}</p><p className="text-xs text-text-muted">{t("Marketing from Movanta", "Marknadsföring från Movanta")}</p></div>
           <Switch checked={marketing} onChange={setMarketing} />
         </div>
-        <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-card px-4 py-3.5">
+        <div className="flex items-center justify-between rounded-2xl border border-ink/10 bg-card px-4 py-3.5">
           <div><p className="text-sm text-text-primary">{t("Language", "Språk")}</p><p className="text-xs text-text-muted">{t("Choose which language the app is shown in", "Välj vilket språk appen visas på")}</p></div>
-          <div className="flex items-center rounded-full border border-white/10 bg-white/[0.03] p-0.5 text-xs font-semibold">
+          <div className="flex items-center rounded-full border border-ink/10 bg-ink/[0.03] p-0.5 text-xs font-semibold">
             {(["en", "sv"] as Lang[]).map((l) => (
               <button
                 key={l}

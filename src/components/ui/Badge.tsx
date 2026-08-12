@@ -9,9 +9,9 @@ export function Badge({
 }) {
   const toneClasses = {
     neutral:
-      "border-white/10 bg-white/[0.03] text-text-secondary",
+      "border-ink/10 bg-ink/[0.03] text-text-secondary",
     yellow: "border-yellow/30 bg-yellow/10 text-yellow",
-    planned: "border-white/15 bg-white/[0.04] text-metal",
+    planned: "border-ink/15 bg-ink/[0.04] text-metal",
   }[tone];
 
   return (

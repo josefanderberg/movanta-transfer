@@ -27,7 +27,7 @@ export function CommunitySection() {
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {communityFeatures.map((feature, i) => (
             <Reveal key={feature.title} delay={i * 50}>
-              <div className="h-full rounded-2xl border border-white/10 bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_20px_40px_-28px_rgba(0,0,0,0.55)]">
+              <div className="h-full rounded-2xl border border-ink/10 bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-ink/20 hover:shadow-[0_20px_40px_-28px_rgba(0,0,0,0.55)]">
                 <h3 className="text-base font-semibold text-text-primary">{feature.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-text-secondary">{feature.description}</p>
               </div>

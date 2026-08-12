@@ -38,8 +38,8 @@ export function TrustSection() {
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {trustFeatures.map((feature, i) => (
             <Reveal key={feature.title} delay={i * 50}>
-              <div className="h-full rounded-2xl border border-white/10 bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_20px_40px_-28px_rgba(0,0,0,0.55)]">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-yellow">
+              <div className="h-full rounded-2xl border border-ink/10 bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-ink/20 hover:shadow-[0_20px_40px_-28px_rgba(0,0,0,0.55)]">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-ink/10 bg-ink/[0.03] text-yellow">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     {icons[i]}
                   </svg>
@@ -51,7 +51,7 @@ export function TrustSection() {
           ))}
         </div>
 
-        <Reveal delay={280} className="mt-10 rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+        <Reveal delay={280} className="mt-10 rounded-2xl border border-ink/10 bg-ink/[0.02] p-6">
           <p className="text-sm leading-relaxed text-text-secondary">
             {t(
               "Insurance protection is intended to be provided through an external insurance partner. Coverage details will be shared ahead of launch.",
