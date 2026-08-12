@@ -14,6 +14,8 @@ export const approxLocationCoords: Record<string, LatLng> = {
   "Hovshaga, Växjö": { lat: 56.902, lng: 14.83 },
   "Dalbo, Växjö": { lat: 56.885, lng: 14.775 },
   "Sandsbro, Växjö": { lat: 56.887, lng: 14.852 },
+  "Evedal, Växjö": { lat: 56.912, lng: 14.827 },
+  "Araby, Växjö": { lat: 56.889, lng: 14.79 },
 };
 
 export function haversineKm(a: LatLng, b: LatLng): number {

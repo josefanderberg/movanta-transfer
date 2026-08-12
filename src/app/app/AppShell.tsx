@@ -181,12 +181,18 @@ function VehicleCard({ vehicle, onOpen }: { vehicle: Vehicle; onOpen: () => void
           <h3 className="text-sm font-semibold text-text-primary">
             {vehicle.brand} {vehicle.model}
           </h3>
-          <p className="text-xs text-text-muted">{vehicle.year} · {transmissionLabel(vehicle.transmission, lang)} · {fuelLabel(vehicle.fuel, lang)}</p>
+          <p className="text-xs text-text-muted">
+            {vehicle.type === "Släpvagn"
+              ? `${vehicle.year} · ${typeLabel(vehicle.type, lang)}`
+              : `${vehicle.year} · ${transmissionLabel(vehicle.transmission, lang)} · ${fuelLabel(vehicle.fuel, lang)}`}
+          </p>
         </div>
         <RatingRow rating={vehicle.rating} reviews={vehicle.reviews} />
       </div>
       <div className="mt-2 flex items-center justify-between text-xs text-text-secondary">
-        <span className="flex items-center gap-1"><Icon name="seat" className="h-3.5 w-3.5" />{vehicle.seats} {t("seats", "säten")}</span>
+        {vehicle.type !== "Släpvagn" && (
+          <span className="flex items-center gap-1"><Icon name="seat" className="h-3.5 w-3.5" />{vehicle.seats} {t("seats", "säten")}</span>
+        )}
         <span className="flex items-center gap-1"><Icon name="pin" className="h-3.5 w-3.5" />{vehicle.distanceKm} km</span>
       </div>
       <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
@@ -414,7 +420,7 @@ export default function AppShell() {
     transmissions: [] as Transmission[],
     elOnly: false,
     availableNow: false,
-    maxPrice: 1000,
+    maxPrice: Infinity,
     maxDistance: Infinity,
     minSeats: 0,
     query: "",
@@ -1366,7 +1372,7 @@ function ExploreView({
   const { lang, t } = useLanguage();
   const toggleType = (ty: VehicleType) => setFilters((f) => ({ ...f, types: f.types.includes(ty) ? f.types.filter((x) => x !== ty) : [...f.types, ty] }));
   const toggleTransmission = (tr: Transmission) => setFilters((f) => ({ ...f, transmissions: f.transmissions.includes(tr) ? f.transmissions.filter((x) => x !== tr) : [...f.transmissions, tr] }));
-  const clearFilters = () => setFilters({ types: [], transmissions: [], elOnly: false, availableNow: false, maxPrice: 1000, maxDistance: Infinity, minSeats: 0, query: filters.query });
+  const clearFilters = () => setFilters({ types: [], transmissions: [], elOnly: false, availableNow: false, maxPrice: Infinity, maxDistance: Infinity, minSeats: 0, query: filters.query });
 
   return (
     <div>
@@ -1410,6 +1416,7 @@ function ExploreView({
           <Chip active={filters.types.includes("Husbil")} onClick={() => toggleType("Husbil")}>{typeLabel("Husbil", lang)}</Chip>
           <Chip active={filters.types.includes("Moped")} onClick={() => toggleType("Moped")}>{typeLabel("Moped", lang)}</Chip>
           <Chip active={filters.types.includes("Släpvagn")} onClick={() => toggleType("Släpvagn")}>{typeLabel("Släpvagn", lang)}</Chip>
+          <Chip active={filters.types.includes("Annat")} onClick={() => toggleType("Annat")}>{typeLabel("Annat", lang)}</Chip>
           <Chip active={filters.transmissions.includes("Automat")} onClick={() => toggleTransmission("Automat")}>{transmissionLabel("Automat", lang)}</Chip>
           <Chip active={filters.transmissions.includes("Manuell")} onClick={() => toggleTransmission("Manuell")}>{transmissionLabel("Manuell", lang)}</Chip>
           <Chip active={filters.elOnly} onClick={() => setFilters((f) => ({ ...f, elOnly: !f.elOnly }))}>{t("Electric", "Elbil")}</Chip>
@@ -1422,8 +1429,16 @@ function ExploreView({
         {moreFilters && (
           <div className="mt-3 grid gap-4 rounded-xl border border-white/10 bg-white/[0.02] p-4 sm:grid-cols-3">
             <div>
-              <p className="mb-1.5 text-xs text-text-muted">{t("Price per day, max", "Pris per dag, max")} {formatSEK(filters.maxPrice)}</p>
-              <input type="range" min={200} max={1000} step={50} value={filters.maxPrice} onChange={(e) => setFilters((f) => ({ ...f, maxPrice: Number(e.target.value) }))} className="w-full accent-yellow" />
+              <p className="mb-1.5 text-xs text-text-muted">{t("Price per day, max", "Pris per dag, max")} {Number.isFinite(filters.maxPrice) ? formatSEK(filters.maxPrice) : t("any", "alla")}</p>
+              <input
+                type="range"
+                min={200}
+                max={2000}
+                step={50}
+                value={Number.isFinite(filters.maxPrice) ? filters.maxPrice : 2000}
+                onChange={(e) => setFilters((f) => ({ ...f, maxPrice: Number(e.target.value) >= 2000 ? Infinity : Number(e.target.value) }))}
+                className="w-full accent-yellow"
+              />
             </div>
             <div>
               <p className="mb-1.5 text-xs text-text-muted">{t("Distance, max", "Avstånd, max")} {Number.isFinite(filters.maxDistance) ? `${filters.maxDistance} km` : t("any", "alla")}</p>
@@ -1560,9 +1575,13 @@ function VehicleDetailView({
 
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
-              { icon: "gear" as IconName, label: transmissionLabel(vehicle.transmission, lang) },
-              { icon: "fuel" as IconName, label: fuelLabel(vehicle.fuel, lang) },
-              { icon: "seat" as IconName, label: `${vehicle.seats} ${t("seats", "säten")}` },
+              ...(vehicle.type === "Släpvagn"
+                ? [{ icon: "gear" as IconName, label: typeLabel(vehicle.type, lang) }]
+                : [
+                    { icon: "gear" as IconName, label: transmissionLabel(vehicle.transmission, lang) },
+                    { icon: "fuel" as IconName, label: fuelLabel(vehicle.fuel, lang) },
+                    { icon: "seat" as IconName, label: `${vehicle.seats} ${t("seats", "säten")}` },
+                  ]),
               { icon: "pin" as IconName, label: `${vehicle.distanceKm} ${t("km away", "km bort")}` },
             ].map((spec) => (
               <div key={spec.label} className="flex flex-col items-center gap-1.5 rounded-xl border border-white/10 bg-card py-3 text-center">

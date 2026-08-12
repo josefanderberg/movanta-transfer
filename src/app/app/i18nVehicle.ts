@@ -131,6 +131,78 @@ const englishVehicleText: Record<string, VehicleText> = {
     rules: ["No smoking", "Pets allowed", "Max 2,000 km/week", "Return emptied and cleaned"],
     insurance: "Full protection with a 6,500 kr deductible is included in every booking via Movanta Skydd.",
   },
+  v13: {
+    description: "Classic Italian style in mint condition. Perfect for zipping around town — park anywhere and enjoy the ride.",
+    features: ["2 helmets included", "Storage compartment", "USB outlet", "Top box"],
+    rules: ["No smoking", "AM licence or higher required", "Helmet mandatory", "Return with a full tank"],
+    insurance: "Full protection with a 2,500 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v14: {
+    description: "Practical cage trailer for garden waste, moving, and building materials. 750 kg total weight — towable on a standard B licence.",
+    features: ["Cage sides", "750 kg total weight", "Tipping function", "13-pin connector with adapter"],
+    rules: ["B licence is enough", "Max 80 km/h when towing", "Load must be secured", "Return cleaned"],
+    insurance: "Full protection with a 1,500 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v15: {
+    description: "Powerful quad bike for forestry work or adventures on private land. Recently serviced and ready for rough duty.",
+    features: ["Tow ball", "Winch", "Auxiliary lights", "Helmet included"],
+    rules: ["Terrain vehicle licence required", "Off-road riding on designated land only", "Protective gear mandatory", "Return cleaned and refuelled"],
+    insurance: "Full protection with a 4,000 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v16: {
+    description: "The dream car for a special weekend. Open top, glorious sound, and world-class performance — weddings, birthdays, or just because.",
+    features: ["Convertible", "Sports exhaust", "BOSE audio", "Sport Chrono package", "Leather interior"],
+    rules: ["No smoking", "No pets", "Minimum age 30 with 5 years licence held", "Max 200 km/day"],
+    insurance: "Full protection with a 15,000 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v17: {
+    description: "Electric van with retro charm and modern tech. Quiet, nimble, and emission-free — perfect for city deliveries.",
+    features: ["Fully electric", "3.9 m³ load volume", "Rear camera", "Adaptive cruise control", "Fast charging"],
+    rules: ["No smoking", "No pets", "Return with at least 50% charge", "Max load 600 kg"],
+    insurance: "Full protection with a 5,500 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v18: {
+    description: "An American classic with that unmistakable V-twin rumble. Comfortable cruiser for scenic rides on Småland roads.",
+    features: ["V-twin 107", "Saddlebags", "Windshield", "Sissy bar"],
+    rules: ["No smoking", "Valid A licence required", "Helmet mandatory", "Return with a full tank"],
+    insurance: "Full protection with a 5,500 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v19: {
+    description: "A well-sailed family yacht on lake Helgasjön. Roomy cockpit, galley, and overnight berths for the whole family.",
+    features: ["4 berths", "Galley with stove", "GPS plotter", "Furling jib", "Swim ladder"],
+    rules: ["Boating licence required", "Life jackets for everyone aboard", "Max 8 people", "Return cleaned"],
+    insurance: "Full protection with an 8,000 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v20: {
+    description: "Three-seat personal watercraft with a cruiser saddle — stable, comfortable, and fun for the whole family on lake Helgasjön.",
+    features: ["3 seats", "Life jackets included", "Reverse gear", "Storage compartment"],
+    rules: ["Jet ski licence required", "Minimum age 18", "Life jacket mandatory", "Return with a full tank"],
+    insurance: "Full protection with a 6,000 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v21: {
+    description: "A restored cult classic that turns heads everywhere. Perfect for weddings, photo shoots, or an unforgettable road trip.",
+    features: ["Pop-up roof", "2 berths", "Camping kitchen", "Retro interior"],
+    rules: ["No smoking", "Gentle driving — vintage vehicle", "Max 100 km/day", "Return cleaned"],
+    insurance: "Full protection with a 7,000 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v22: {
+    description: "Nimble, peppy scooter that gets you through town faster than a car. Low fuel consumption and easy to ride.",
+    features: ["Helmet included", "Lockable storage", "Phone holder"],
+    rules: ["AM licence or higher required", "Helmet mandatory", "One passenger only", "Return with a full tank"],
+    insurance: "Full protection with a 2,500 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v23: {
+    description: "Light, easy-to-tow flatbed trailer with a cargo net. Perfect for tip runs, firewood, or a small move.",
+    features: ["750 kg total weight", "Cargo net included", "Tippable", "Jockey wheel"],
+    rules: ["B licence is enough", "Max 80 km/h when towing", "Load must be secured with net or straps", "Return cleaned"],
+    insurance: "Full protection with a 1,500 kr deductible is included in every booking via Movanta Skydd.",
+  },
+  v24: {
+    description: "Sporty snowmobile for the winter season. Rented with a trailer so you can easily bring it to the mountains or trails.",
+    features: ["Transport trailer included", "Helmet included", "Heated grips", "Tow hitch"],
+    rules: ["Snowmobile licence required", "Trail riding only", "Helmet mandatory", "Return with a full tank"],
+    insurance: "Full protection with a 6,000 kr deductible is included in every booking via Movanta Skydd.",
+  },
 };
 
 export function localizeVehicle<V extends Vehicle>(vehicle: V, lang: Lang): V {
