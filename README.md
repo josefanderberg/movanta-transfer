@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Movanta
 
-## Getting Started
+Peer-to-peer fordonsuthyrning — hyr bilar, motorcyklar, båtar, husbilar, mopeder, släpvagnar och mer av privatpersoner och verifierade företag i närheten.
 
-First, run the development server:
+**Live-demo:** https://josefanderberg.github.io/movanta-transfer/
+**Appen:** https://josefanderberg.github.io/movanta-transfer/app
+
+> Detta är en klickbar prototyp. Det finns ingen backend — konton, annonser, bokningar, meddelanden och kontrakt lagras i webbläsarens localStorage. Ingen riktig betalning eller identitetskontroll sker.
+
+## Innehåll
+
+- **Marknadssajt** — hero, problem/lösning, så-funkar-det, väntelista, FAQ samt juridiska sidor (integritet, villkor, cookies). Tvåspråkig (svenska/engelska).
+- **Appen (`/app`)** — utforska 24 fordon över alla kategorier med riktiga foton, filter och Leaflet-karta, bokningsflöde med e-signering och PDF-kontrakt, annonsguide med priskalkylator, körkortsverifiering och admin-panel.
+
+### Demokonton
+
+| Roll | E-post | Lösenord |
+| --- | --- | --- |
+| Användare | `demo@movanta.se` | `demo1234` |
+| Hyresgäst | `test.renter@movanta.se` | `test1234` |
+| Admin | `admin@movanta.se` | `admin1234` |
+
+## Utveckling
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Öppna [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Statisk export / deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Sajten byggs som statisk export (`output: "export"`) och deployas automatiskt till GitHub Pages via GitHub Actions vid push till `main`. Pages-bygget sätter `NEXT_PUBLIC_BASE_PATH=/movanta-transfer`; lokala byggen utan variabeln hamnar på rot.
 
-## Learn More
+```bash
+npm run build   # statisk export till out/
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Bildkällor
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Fordonsfotona kommer från Wikimedia Commons under fria licenser — källor, upphovspersoner och licenser per bild finns i [IMAGE_ATTRIBUTIONS.json](IMAGE_ATTRIBUTIONS.json).

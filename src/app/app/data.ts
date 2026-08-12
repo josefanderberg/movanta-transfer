@@ -39,6 +39,11 @@ export type Vehicle = {
   // curated mock vehicles render their usual gradient + icon thumbnail when
   // this is absent, so nothing about the existing fleet changes.
   photos?: string[];
+  // Optional — a small (480px) cover variant used by list/card thumbnails so
+  // the Explore grid doesn't download every full-size gallery photo. Only the
+  // curated fleet has pre-generated thumbs; user listings fall back to
+  // photos[0] (already client-compressed data URLs).
+  thumb?: string;
   // Optional — a real geocoded position for a user-created listing's pickup
   // address. When absent, the map falls back to a deterministic placeholder
   // jitter around the vehicle's named area, same as the curated fleet.
@@ -75,7 +80,8 @@ export type Vehicle = {
 export const vehicles: Vehicle[] = [
   {
     id: "v1",
-    photos: [vp("v1.jpg")],
+    photos: [vp("v1.jpg"), vp("v1-2.jpg")],
+    thumb: vp("v1-thumb.jpg"),
     brand: "Tesla",
     model: "Model 3",
     year: 2023,
@@ -100,7 +106,8 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "v2",
-    photos: [vp("v2.jpg")],
+    photos: [vp("v2.jpg"), vp("v2-2.jpg")],
+    thumb: vp("v2-thumb.jpg"),
     brand: "Volvo",
     model: "XC60",
     year: 2022,
@@ -125,6 +132,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v3",
     photos: [vp("v3.jpg")],
+    thumb: vp("v3-thumb.jpg"),
     brand: "Volkswagen",
     model: "Golf",
     year: 2021,
@@ -149,6 +157,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v4",
     photos: [vp("v4.jpg")],
+    thumb: vp("v4-thumb.jpg"),
     brand: "Mercedes-Benz",
     model: "Vito",
     year: 2022,
@@ -173,6 +182,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v5",
     photos: [vp("v5.jpg")],
+    thumb: vp("v5-thumb.jpg"),
     brand: "Toyota",
     model: "Corolla",
     year: 2023,
@@ -197,6 +207,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v6",
     photos: [vp("v6.jpg")],
+    thumb: vp("v6-thumb.jpg"),
     brand: "BMW",
     model: "3-serie",
     year: 2022,
@@ -221,6 +232,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v7",
     photos: [vp("v7.jpg")],
+    thumb: vp("v7-thumb.jpg"),
     brand: "Ford",
     model: "Transit",
     year: 2021,
@@ -245,6 +257,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v8",
     photos: [vp("v8.jpg")],
+    thumb: vp("v8-thumb.jpg"),
     brand: "Kia",
     model: "EV6",
     year: 2023,
@@ -269,6 +282,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v9",
     photos: [vp("v9.jpg")],
+    thumb: vp("v9-thumb.jpg"),
     brand: "BMW",
     model: "R 1250 GS",
     year: 2023,
@@ -293,6 +307,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v10",
     photos: [vp("v10.jpg")],
+    thumb: vp("v10-thumb.jpg"),
     brand: "Bayliner",
     model: "VR5",
     year: 2022,
@@ -317,6 +332,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v11",
     photos: [vp("v11.jpg")],
+    thumb: vp("v11-thumb.jpg"),
     brand: "Sea-Doo",
     model: "Spark",
     year: 2023,
@@ -341,6 +357,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v12",
     photos: [vp("v12.jpg")],
+    thumb: vp("v12-thumb.jpg"),
     brand: "Adria",
     model: "Matrix",
     year: 2021,
@@ -365,6 +382,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v13",
     photos: [vp("v13.jpg")],
+    thumb: vp("v13-thumb.jpg"),
     brand: "Vespa",
     model: "Primavera 125",
     year: 2023,
@@ -389,6 +407,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v14",
     photos: [vp("v14.jpg")],
+    thumb: vp("v14-thumb.jpg"),
     brand: "Brenderup",
     model: "1205 XL med galler",
     year: 2022,
@@ -413,6 +432,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v15",
     photos: [vp("v15.jpg")],
+    thumb: vp("v15-thumb.jpg"),
     brand: "KTM",
     model: "525 XC Fyrhjuling",
     year: 2021,
@@ -436,7 +456,8 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "v16",
-    photos: [vp("v16.jpg")],
+    photos: [vp("v16.jpg"), vp("v16-2.jpg")],
+    thumb: vp("v16-thumb.jpg"),
     brand: "Porsche",
     model: "911 Carrera Cabriolet",
     year: 2023,
@@ -461,6 +482,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v17",
     photos: [vp("v17.jpg")],
+    thumb: vp("v17-thumb.jpg"),
     brand: "Volkswagen",
     model: "ID. Buzz Cargo",
     year: 2024,
@@ -485,8 +507,9 @@ export const vehicles: Vehicle[] = [
   {
     id: "v18",
     photos: [vp("v18.jpg")],
+    thumb: vp("v18-thumb.jpg"),
     brand: "Harley-Davidson",
-    model: "Softail Standard",
+    model: "Heritage Softail",
     year: 2021,
     type: "Motorcykel",
     transmission: "Manuell",
@@ -509,6 +532,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v19",
     photos: [vp("v19.jpg")],
+    thumb: vp("v19-thumb.jpg"),
     brand: "Beneteau",
     model: "Oceanis 34.1",
     year: 2019,
@@ -532,7 +556,8 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "v20",
-    photos: [vp("v20.jpg")],
+    photos: [vp("v20.jpg"), vp("v20-2.jpg")],
+    thumb: vp("v20-thumb.jpg"),
     brand: "Yamaha",
     model: "WaveRunner VX Cruiser",
     year: 2022,
@@ -556,7 +581,8 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "v21",
-    photos: [vp("v21.jpg")],
+    photos: [vp("v21.jpg"), vp("v21-2.jpg")],
+    thumb: vp("v21-thumb.jpg"),
     brand: "Volkswagen",
     model: "T2 Folkabuss Camper",
     year: 1976,
@@ -581,6 +607,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v22",
     photos: [vp("v22.jpg")],
+    thumb: vp("v22-thumb.jpg"),
     brand: "Vespa",
     model: "GTS 125",
     year: 2022,
@@ -604,7 +631,8 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: "v23",
-    photos: [vp("v23.jpg")],
+    photos: [vp("v23.jpg"), vp("v23-2.jpg")],
+    thumb: vp("v23-thumb.jpg"),
     brand: "Westfalia",
     model: "Flaksläp 750",
     year: 2020,
@@ -629,6 +657,7 @@ export const vehicles: Vehicle[] = [
   {
     id: "v24",
     photos: [vp("v24.jpg")],
+    thumb: vp("v24-thumb.jpg"),
     brand: "Ski-Doo",
     model: "MXZ 600",
     year: 2021,

@@ -111,7 +111,7 @@ function VehicleThumb({ vehicle, className = "h-40 w-full", compact = false }: {
     >
       {vehicle.photos?.[0] ? (
         // eslint-disable-next-line @next/next/no-img-element -- user photos are local data: URLs, not next/image-compatible remote assets
-        <img src={vehicle.photos[0]} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={vehicle.thumb ?? vehicle.photos[0]} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
       ) : (
         <Icon name={vehicleIcon(vehicle.type)} className={compact ? "h-7 w-7 text-white/30" : "h-16 w-16 text-white/25"} />
       )}
@@ -874,7 +874,7 @@ export default function AppShell() {
     setToast(t("Profile updated.", "Profilen är uppdaterad."));
   }
 
-  function submitLicenseVerification(photos: [string, string]) {
+  function submitLicenseVerification(photos: [string, string], licenseYears: number) {
     if (!currentUser) return;
     // A pending or already-approved request blocks a new one — resubmission
     // is only allowed after a rejection. The UI already hides the form in
@@ -885,12 +885,14 @@ export default function AppShell() {
       id: uid("ver"),
       userId: currentUser.id,
       photos,
-      licenseYears: currentUser.licenseYears,
+      licenseYears,
       status: "pending",
       submittedAt: new Date().toISOString(),
     };
     addVerificationRequest(request);
-    const users = getUsers().map((u) => (u.id === currentUser.id ? { ...u, licenseStatus: "Väntar" as const } : u));
+    // licenseYears moved here from registration — persist what the user just
+    // entered so booking-eligibility checks use it.
+    const users = getUsers().map((u) => (u.id === currentUser.id ? { ...u, licenseStatus: "Väntar" as const, licenseYears } : u));
     saveUsers(users);
     setCurrentUser(users.find((u) => u.id === currentUser.id) ?? null);
     setVerificationsVersion((v) => v + 1);
@@ -2061,54 +2063,96 @@ function LoginForm({ onLogin, onForgot }: { onLogin: (email: string, password: s
 
 function RegisterForm({ onRegister }: { onRegister: (payload: { firstName: string; lastName: string; email: string; phone: string; password: string; licenseYears: number }) => string | null }) {
   const { t } = useLanguage();
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", password: "", confirm: "", licenseYears: "0" });
+  const [step, setStep] = useState<1 | 2>(1);
+  const [form, setForm] = useState({ email: "", password: "", firstName: "", lastName: "", phone: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const inputClass = "mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none";
+
+  function nextFromAccount(e: React.FormEvent) {
+    e.preventDefault();
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) return setError(t("Enter a valid email address.", "Ange en giltig e-postadress."));
+    if (form.password.length < 6) return setError(t("The password must be at least 6 characters.", "Lösenordet måste vara minst 6 tecken."));
+    setError(null);
+    setStep(2);
+  }
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.firstName || !form.lastName) return setError(t("Fill in first and last name.", "Fyll i för- och efternamn."));
-    if (!/^\S+@\S+\.\S+$/.test(form.email)) return setError(t("Enter a valid email address.", "Ange en giltig e-postadress."));
+    if (!form.firstName.trim() || !form.lastName.trim()) return setError(t("Fill in first and last name.", "Fyll i för- och efternamn."));
     if (!/^[\d+][\d\s-]{6,}$/.test(form.phone)) return setError(t("Enter a valid phone number.", "Ange ett giltigt telefonnummer."));
-    if (form.password.length < 6) return setError(t("The password must be at least 6 characters.", "Lösenordet måste vara minst 6 tecken."));
-    if (form.password !== form.confirm) return setError(t("The passwords don't match.", "Lösenorden matchar inte."));
-    const err = onRegister({ ...form, licenseYears: Number(form.licenseYears) || 0 });
+    // Licence details are collected in the driving-licence verification flow
+    // (where they're actually needed), not at sign-up.
+    const err = onRegister({ ...form, licenseYears: 0 });
     if (err) setError(err);
   }
 
+  const steps = [t("Account", "Konto"), t("About you", "Om dig")];
+
   return (
-    <form onSubmit={submit} className="space-y-3.5">
-      {error && <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3.5 py-2.5 text-xs text-red-300">{error}</div>}
-      <div className="grid grid-cols-2 gap-3">
-        <label className="text-xs text-text-muted">{t("First name", "Förnamn")}
-          <input value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
-        </label>
-        <label className="text-xs text-text-muted">{t("Last name", "Efternamn")}
-          <input value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
-        </label>
+    <div>
+      <div className="mb-5 flex items-center justify-center gap-3">
+        {steps.map((label, i) => {
+          const n = (i + 1) as 1 | 2;
+          return (
+            <div key={label} className="flex items-center gap-3">
+              {i > 0 && <span className="h-px w-8 bg-white/15" />}
+              <div className="flex items-center gap-2">
+                <span
+                  className={`flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold ${
+                    step === n ? "bg-yellow text-[#08090A]" : step > n ? "bg-yellow/20 text-yellow" : "bg-white/10 text-text-muted"
+                  }`}
+                >
+                  {step > n ? "✓" : n}
+                </span>
+                <span className={`text-xs font-medium ${step === n ? "text-text-primary" : "text-text-muted"}`}>{label}</span>
+              </div>
+            </div>
+          );
+        })}
       </div>
-      <label className="block text-xs text-text-muted">{t("Email", "E-post")}
-        <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" placeholder={t("you@example.com", "du@exempel.se")} />
-      </label>
-      <label className="block text-xs text-text-muted">{t("Phone number", "Telefonnummer")}
-        <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" placeholder="070-123 45 67" />
-      </label>
-      <label className="block text-xs text-text-muted">{t("Years with driving licence", "Antal år med körkort")}
-        <input type="number" min={0} value={form.licenseYears} onChange={(e) => setForm({ ...form, licenseYears: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
-      </label>
-      <label className="block text-xs text-text-muted">{t("Password", "Lösenord")}
-        <div className="relative mt-1">
-          <input type={showPassword ? "text" : "password"} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 pr-10 text-sm text-text-primary focus:outline-none" placeholder={t("At least 6 characters", "Minst 6 tecken")} />
-          <button type="button" onClick={() => setShowPassword((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary">
-            <Icon name={showPassword ? "eyeOff" : "eye"} className="h-4 w-4" />
+
+      {step === 1 ? (
+        <form onSubmit={nextFromAccount} className="space-y-3.5">
+          {error && <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3.5 py-2.5 text-xs text-red-300">{error}</div>}
+          <label className="block text-xs text-text-muted">{t("Email", "E-post")}
+            <input type="email" autoComplete="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass} placeholder={t("you@example.com", "du@exempel.se")} />
+          </label>
+          <label className="block text-xs text-text-muted">{t("Password", "Lösenord")}
+            <div className="relative mt-1">
+              <input type={showPassword ? "text" : "password"} autoComplete="new-password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 pr-10 text-sm text-text-primary focus:outline-none" placeholder={t("At least 6 characters", "Minst 6 tecken")} />
+              <button type="button" onClick={() => setShowPassword((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary" aria-label={t("Show password", "Visa lösenord")}>
+                <Icon name={showPassword ? "eyeOff" : "eye"} className="h-4 w-4" />
+              </button>
+            </div>
+          </label>
+          <button type="submit" className="w-full rounded-full bg-yellow py-3 text-sm font-semibold text-[#08090A] transition-transform hover:-translate-y-0.5">{t("Continue", "Fortsätt")}</button>
+          <p className="text-center text-[11px] leading-relaxed text-text-muted">
+            {t("Driving licence and payment details are only needed later, when you book or list a vehicle.", "Körkort och betalningsuppgifter behövs först senare, när du bokar eller lägger upp ett fordon.")}
+          </p>
+        </form>
+      ) : (
+        <form onSubmit={submit} className="space-y-3.5">
+          {error && <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3.5 py-2.5 text-xs text-red-300">{error}</div>}
+          <div className="grid grid-cols-2 gap-3">
+            <label className="text-xs text-text-muted">{t("First name", "Förnamn")}
+              <input autoComplete="given-name" value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} className={inputClass} />
+            </label>
+            <label className="text-xs text-text-muted">{t("Last name", "Efternamn")}
+              <input autoComplete="family-name" value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className={inputClass} />
+            </label>
+          </div>
+          <label className="block text-xs text-text-muted">{t("Phone number", "Telefonnummer")}
+            <input type="tel" autoComplete="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputClass} placeholder="070-123 45 67" />
+            <span className="mt-1 block text-[11px] text-text-muted">{t("Used so owner and renter can reach each other around a booking.", "Används så att ägare och hyresgäst kan nå varandra kring en bokning.")}</span>
+          </label>
+          <button type="submit" className="w-full rounded-full bg-yellow py-3 text-sm font-semibold text-[#08090A] transition-transform hover:-translate-y-0.5">{t("Create account", "Skapa konto")}</button>
+          <button type="button" onClick={() => { setError(null); setStep(1); }} className="w-full text-center text-xs font-medium text-text-secondary hover:text-text-primary">
+            {t("Back to account details", "Tillbaka till kontouppgifter")}
           </button>
-        </div>
-      </label>
-      <label className="block text-xs text-text-muted">{t("Confirm password", "Bekräfta lösenord")}
-        <input type={showPassword ? "text" : "password"} value={form.confirm} onChange={(e) => setForm({ ...form, confirm: e.target.value })} className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none" />
-      </label>
-      <button type="submit" className="w-full rounded-full bg-yellow py-3 text-sm font-semibold text-[#08090A] transition-transform hover:-translate-y-0.5">{t("Create account", "Skapa konto")}</button>
-    </form>
+        </form>
+      )}
+    </div>
   );
 }
 
@@ -2354,12 +2398,13 @@ function LicenseVerificationView({
 }: {
   user: User;
   requests: VerificationRequest[];
-  onSubmit: (photos: [string, string]) => void;
+  onSubmit: (photos: [string, string], licenseYears: number) => void;
   onBack: () => void;
 }) {
   const { lang, t } = useLanguage();
   const [frontPhoto, setFrontPhoto] = useState<string | null>(null);
   const [backPhoto, setBackPhoto] = useState<string | null>(null);
+  const [licenseYears, setLicenseYears] = useState(user.licenseYears ? String(user.licenseYears) : "");
   const [processingFront, setProcessingFront] = useState(false);
   const [processingBack, setProcessingBack] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
@@ -2405,7 +2450,12 @@ function LicenseVerificationView({
       setErrors([t("Add both a front and back photo of your driving licence.", "Lägg till foto på både fram- och baksidan av körkortet.")]);
       return;
     }
-    onSubmit([frontPhoto, backPhoto]);
+    const years = Number(licenseYears);
+    if (licenseYears.trim() === "" || !Number.isFinite(years) || years < 0) {
+      setErrors([t("Enter how many years you have held your licence.", "Ange hur många år du har haft körkort.")]);
+      return;
+    }
+    onSubmit([frontPhoto, backPhoto], Math.floor(years));
     setFrontPhoto(null);
     setBackPhoto(null);
   }
@@ -2478,6 +2528,17 @@ function LicenseVerificationView({
             />
           </div>
           <p className="mt-3 text-xs text-text-muted">{t("JPG or PNG, max 10MB each", "JPG eller PNG, max 10MB per bild")}</p>
+          <label className="mt-4 block text-xs text-text-muted">{t("Years with driving licence", "Antal år med körkort")}
+            <input
+              type="number"
+              min={0}
+              value={licenseYears}
+              onChange={(e) => setLicenseYears(e.target.value)}
+              className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-text-primary focus:outline-none"
+              placeholder={t("e.g. 5", "t.ex. 5")}
+            />
+            <span className="mt-1 block text-[11px] text-text-muted">{t("Some vehicles require a minimum number of licence years.", "Vissa fordon kräver ett minsta antal år med körkort.")}</span>
+          </label>
           <button
             type="button"
             onClick={submit}
