@@ -27,16 +27,17 @@ export type IntroHandle = {
   dispose: () => void;
 };
 
-const DURATION = 4.2; // seconds; onDone fires earlier so the CSS fade overlaps the drive
-const DONE_AT = 3.5;
+const DURATION = 3.3; // seconds; onDone fires earlier so the CSS fade overlaps the drive
+const DONE_AT = 2.7;
 
-const SPEED = 30; // m/s ≈ 108 km/h; the world scrolls +z past the static car anchor
+const SPEED = 37; // m/s ≈ 133 km/h; the world scrolls +z past the static car anchor
 const TILE = 300; // treadmill tile length; all periodic noise repeats over this
 const TILES = 3; // tiles per recycled element (span = TILE * TILES)
 
 // Carriageway layout (meters). Travel direction is -z, right-hand traffic:
 // median barrier at x=0, our lanes on +x, oncoming mirrored on -x.
-const LANE_OUT = 6.4; // cruising-lane center — where the car will sit (overtaking lane centers on 2.8)
+const LANE_OUT = 6.4; // cruising-lane center — where the car ends up
+const LANE_IN = 2.8; // overtaking-lane center — where the car starts its merge
 const EDGE_IN = 1.0; // solid line against the median
 const EDGE_OUT = 8.3; // solid line against the shoulder
 const DASH_X = 4.6; // dashed divider between the two lanes
@@ -591,12 +592,73 @@ export function startHighwayIntro(canvas: HTMLCanvasElement, onDone: () => void)
   // treadmills past it, so the car itself stays at z=0 and only the wheels
   // spin; headlights/taillights ramp with the street lights.
   const carMount = new THREE.Group();
-  carMount.position.set(LANE_OUT, 0, 0);
+  carMount.position.set(LANE_IN, 0, 0); // starts mid-overtake, merges right
   scene.add(carMount);
   const car = buildXC60Geometry();
   const carDress = applyXC60Materials(car);
   carMount.add(car.group);
   const WHEEL_RADIUS = 0.37;
+
+  // Taillight bloom: two additive sprites hugging the L-blades so the rear
+  // signature blooms once the lights ramp (the chase camera lives back here).
+  const tailFlareTex = radialTexture([
+    [0, "rgba(255,64,48,0.9)"],
+    [0.4, "rgba(230,32,24,0.25)"],
+    [1, "rgba(230,32,24,0)"],
+  ]);
+  const tailFlareMat = new THREE.SpriteMaterial({
+    map: tailFlareTex,
+    blending: THREE.AdditiveBlending,
+    transparent: true,
+    depthWrite: false,
+    opacity: 0,
+  });
+  for (const x of [-0.63, 0.63]) {
+    const flare = new THREE.Sprite(tailFlareMat);
+    flare.position.set(x, 0.98, 2.4);
+    flare.scale.set(0.55, 0.55, 1);
+    car.group.add(flare);
+  }
+
+  // ---------- oncoming traffic ----------
+  // Two cars sweep past on the other carriageway: dark bodies, hot headlight
+  // glare that pierces the fog. At combined ~65 m/s they cross the frame fast.
+  const glareTex = radialTexture([
+    [0, "rgba(255,240,214,0.95)"],
+    [0.25, "rgba(255,225,180,0.35)"],
+    [1, "rgba(255,225,180,0)"],
+  ]);
+  const oncomingMat = new THREE.MeshStandardMaterial({ color: 0x0d1117, roughness: 0.85, metalness: 0.2 });
+  const oncoming: THREE.Group[] = [];
+  const buildOncoming = (laneX: number, z0: number): void => {
+    const g = new THREE.Group();
+    const body = new THREE.Mesh(new THREE.BoxGeometry(1.82, 0.95, 4.4), oncomingMat);
+    body.position.y = 0.75;
+    g.add(body);
+    const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.55, 2.1), oncomingMat);
+    cabin.position.set(0, 1.45, 0.2);
+    g.add(cabin);
+    for (const x of [-0.62, 0.62]) {
+      const glare = new THREE.Sprite(
+        new THREE.SpriteMaterial({ map: glareTex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 1, fog: false })
+      );
+      glare.position.set(x, 0.72, 2.28); // nose faces +z — toward the camera
+      glare.scale.set(2.6, 2.6, 1);
+      g.add(glare);
+    }
+    // Wide soft halo so the pair reads as one hot glow from far away.
+    const halo = new THREE.Sprite(
+      new THREE.SpriteMaterial({ map: glareTex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 0.3, fog: false })
+    );
+    halo.position.set(0, 0.8, 2.3);
+    halo.scale.set(7, 3.2, 1);
+    g.add(halo);
+    g.position.set(laneX, 0, z0);
+    scene.add(g);
+    oncoming.push(g);
+  };
+  buildOncoming(-LANE_OUT, -120);
+  buildOncoming(-LANE_IN, -240);
 
   // ---------- timeline ----------
   let raf = 0;
@@ -634,27 +696,46 @@ export function startHighwayIntro(canvas: HTMLCanvasElement, onDone: () => void)
     for (const w of car.wheels) w.rotation.x -= dz / WHEEL_RADIUS;
     carDress.update(dt);
 
+    // Overtake finished: the car merges from the fast lane into the cruising
+    // lane with a touch of counter-yaw and body lean.
+    const mergeT = seg(t, 0.55, 1.75);
+    carMount.position.x = LANE_IN + (LANE_OUT - LANE_IN) * easeInOutCubic(mergeT);
+    const mergeBell = Math.sin(Math.PI * mergeT);
+    car.group.rotation.y = -0.085 * mergeBell;
+    car.group.rotation.z = 0.02 * mergeBell;
+
+    // Oncoming traffic closes at combined speed and sweeps past the camera.
+    for (const o of oncoming) {
+      o.position.z += (SPEED + 28) * dt;
+      if (o.position.z > 70) o.position.z -= 460;
+    }
+
     // Street lights fade in as the blue hour deepens; the car lights up with them.
-    const lampsOn = seg(t, 0.2, 1.1);
+    const lampsOn = seg(t, 0.12, 0.8);
     lampHeadMat.emissiveIntensity = lampsOn * 2.6;
     poolMat.opacity = lampsOn * 0.2;
-    carDress.setLightsOn(seg(t, 0.35, 1.3));
+    const carLights = seg(t, 0.22, 0.95);
+    carDress.setLightsOn(carLights);
+    tailFlareMat.opacity = carLights * 0.5;
 
     // Camera: crane down from a high reveal of the valley into a low chase
-    // position behind the (future) car, with a gentle highway sway.
-    const k = easeInOutCubic(seg(t, 0.1, 2.5));
-    const sway = seg(t, 1.2, 2.8);
+    // position behind the car, with a gentle highway sway and a widening
+    // FOV kick toward the end that sells the speed.
+    const k = easeInOutCubic(seg(t, 0.06, 1.9));
+    const sway = seg(t, 0.85, 2.1);
     camera.position.set(
-      11.5 + (7.3 - 11.5) * k + Math.sin(t * 1.1) * 0.14 * sway,
-      7.0 + (2.85 - 7.0) * k + Math.sin(t * 2.3) * 0.045 * sway,
+      11.5 + (7.3 - 11.5) * k + Math.sin(t * 1.4) * 0.14 * sway,
+      7.0 + (2.85 - 7.0) * k + Math.sin(t * 2.9) * 0.045 * sway,
       30 + (12.5 - 30) * k
     );
     lookTarget.set(
-      2 + (LANE_OUT - 0.4 - 2) * k + Math.sin(t * 0.9) * 0.3 * sway,
+      2 + (LANE_OUT - 0.4 - 2) * k + Math.sin(t * 1.15) * 0.3 * sway,
       4 + (1.5 - 4) * k,
       -80 + (-32 - -80) * k
     );
     camera.lookAt(lookTarget);
+    camera.fov = 52 + 6 * seg(t, 1.5, 2.9);
+    camera.updateProjectionMatrix();
 
     renderer.render(scene, camera);
   };
@@ -696,7 +777,7 @@ export function startHighwayIntro(canvas: HTMLCanvasElement, onDone: () => void)
         for (const m of mats) m?.dispose();
       }
     });
-    for (const tex of [skyTex, asphaltTex, signTex, glowTex, moonTex, poolTex]) tex.dispose();
+    for (const tex of [skyTex, asphaltTex, signTex, glowTex, moonTex, poolTex, tailFlareTex, glareTex]) tex.dispose();
     envTex.dispose();
     renderer.dispose();
   };
