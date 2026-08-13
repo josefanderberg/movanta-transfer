@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/Navbar";
+import { HighwayIntro } from "@/components/intro/HighwayIntro";
 import { Hero } from "@/components/Hero";
 import { ProblemSection } from "@/components/ProblemSection";
 import { SolutionSection } from "@/components/SolutionSection";
@@ -16,6 +17,17 @@ import { Footer } from "@/components/Footer";
 export default function Home() {
   return (
     <>
+      {/* Runs before the page paints: covers the viewport (see html[data-intro]
+          in globals.css) so the hero never flashes before the highway intro.
+          The intro plays on every page load unless the visitor prefers reduced
+          motion. HighwayIntro takes the cover over once hydrated. */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html:
+            '(function(){try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;document.documentElement.setAttribute("data-intro","")}catch(e){}})()',
+        }}
+      />
+      <HighwayIntro />
       <Navbar />
       <main>
         <Hero />

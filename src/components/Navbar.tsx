@@ -104,6 +104,9 @@ export function Navbar() {
         <div className="hidden items-center gap-3 lg:flex">
           <ThemeToggle />
           <LanguageSwitcher />
+          <ButtonLink href={withBasePath("/app")} variant="secondary" className="text-sm">
+            {brand.appCta}
+          </ButtonLink>
           <ButtonLink href="#waitlist" className="text-sm">
             {brand.waitlistCta}
           </ButtonLink>
@@ -154,7 +157,15 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <ButtonLink href="#waitlist" onClick={() => setMenuOpen(false)} className="mt-3 w-full">
+            <ButtonLink
+              href={withBasePath("/app")}
+              variant="secondary"
+              onClick={() => setMenuOpen(false)}
+              className="mt-3 w-full"
+            >
+              {brand.appCta}
+            </ButtonLink>
+            <ButtonLink href="#waitlist" onClick={() => setMenuOpen(false)} className="mt-2 w-full">
               {brand.waitlistCta}
             </ButtonLink>
           </div>

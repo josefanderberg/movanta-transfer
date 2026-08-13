@@ -9,6 +9,7 @@ import { typeLabel, transmissionLabel, fuelLabel } from "./i18nVehicle";
 import { Listing, DateRange, compressImage, MAX_PHOTOS, getListings, listingToVehicle } from "./listings";
 import { geocodeAddress, VAXJO_CENTER, type AddressSuggestion } from "./geo";
 import { AddressAutocomplete } from "./AddressAutocomplete";
+import { RangeInput } from "@/components/ui/RangeInput";
 import {
   DEFAULT_ENERGY_PRICES,
   DEFAULT_INSURANCE_CONFIG,
@@ -497,13 +498,13 @@ export function ListingWizard({
                     assumedElectricityPrice: DEFAULT_ENERGY_PRICES.electricityPerKwh,
                   });
                 }}
-                className={`${inputClass} [color-scheme:dark]`}
+                className={`${inputClass}`}
               >
                 {FUEL_OPTIONS.map((f) => <option key={f} value={f}>{fuelLabel(f, lang)}</option>)}
               </select>
             </Field>
             <Field label={t("Transmission", "Växellåda")}>
-              <select value={draft.transmission} onChange={(e) => patch({ transmission: e.target.value as Transmission })} className={`${inputClass} [color-scheme:dark]`}>
+              <select value={draft.transmission} onChange={(e) => patch({ transmission: e.target.value as Transmission })} className={`${inputClass}`}>
                 {TRANSMISSION_OPTIONS.map((tr) => <option key={tr} value={tr}>{transmissionLabel(tr, lang)}</option>)}
               </select>
             </Field>
@@ -664,8 +665,8 @@ export function ListingWizard({
             <Field label={t("Security deposit", "Depositionsbelopp")}><input type="number" min={0} value={draft.deposit} onChange={(e) => patch({ deposit: Number(e.target.value) })} className={priceInputClass} /></Field>
             <Field label={t("Minimum rental duration (days)", "Minsta hyresperiod (dagar)")}><input type="number" min={1} value={draft.minDurationDays} onChange={(e) => patch({ minDurationDays: Number(e.target.value) })} className={inputClass} /></Field>
             <Field label={t("Maximum rental duration (days, optional)", "Längsta hyresperiod (dagar, valfritt)")}><input type="number" min={1} value={draft.maxDurationDays ?? ""} onChange={(e) => patch({ maxDurationDays: e.target.value ? Number(e.target.value) : null })} className={inputClass} /></Field>
-            <Field label={t("Available from", "Tillgänglig från")}><input type="date" value={draft.availableFrom} onChange={(e) => patch({ availableFrom: e.target.value })} className={`${inputClass} [color-scheme:dark]`} /></Field>
-            <Field label={t("Available to (optional)", "Tillgänglig till (valfritt)")}><input type="date" value={draft.availableTo} onChange={(e) => patch({ availableTo: e.target.value })} className={`${inputClass} [color-scheme:dark]`} /></Field>
+            <Field label={t("Available from", "Tillgänglig från")}><input type="date" value={draft.availableFrom} onChange={(e) => patch({ availableFrom: e.target.value })} className={`${inputClass}`} /></Field>
+            <Field label={t("Available to (optional)", "Tillgänglig till (valfritt)")}><input type="date" value={draft.availableTo} onChange={(e) => patch({ availableTo: e.target.value })} className={`${inputClass}`} /></Field>
           </div>
 
           {marketComparison.count > 0 && (
@@ -695,9 +696,9 @@ export function ListingWizard({
             <div className="mt-2 space-y-2">
               {draft.unavailableRanges.map((r, i) => (
                 <div key={i} className="flex items-center gap-2">
-                  <input type="date" value={r.start} onChange={(e) => updateUnavailableRange(i, { start: e.target.value })} className={`${inputClass} mt-0 [color-scheme:dark]`} />
+                  <input type="date" value={r.start} onChange={(e) => updateUnavailableRange(i, { start: e.target.value })} className={`${inputClass} mt-0`} />
                   <span className="text-xs text-text-muted">{t("to", "till")}</span>
-                  <input type="date" value={r.end} onChange={(e) => updateUnavailableRange(i, { end: e.target.value })} className={`${inputClass} mt-0 [color-scheme:dark]`} />
+                  <input type="date" value={r.end} onChange={(e) => updateUnavailableRange(i, { end: e.target.value })} className={`${inputClass} mt-0`} />
                   <button type="button" onClick={() => removeUnavailableRange(i)} aria-label={t("Remove", "Ta bort")} className="shrink-0 text-text-muted hover:text-red-300"><Icon name="close" className="h-4 w-4" /></button>
                 </div>
               ))}
@@ -755,7 +756,7 @@ export function ListingWizard({
 
             <div className="mt-3 grid grid-cols-2 gap-3">
               <Field label={t("Expected booked days per week", "Förväntade bokade dagar per vecka")}>
-                <input type="range" min={1} max={7} value={draft.expectedBookedDays} onChange={(e) => patch({ expectedBookedDays: Number(e.target.value) })} className="mt-2 w-full accent-yellow" />
+                <RangeInput min={1} max={7} value={draft.expectedBookedDays} onChange={(e) => patch({ expectedBookedDays: Number(e.target.value) })} className="mt-2" />
                 <p className="mt-1 text-xs text-text-secondary">{draft.expectedBookedDays} {t(draft.expectedBookedDays === 1 ? "day" : "days", "dagar")}/{t("week", "vecka")}</p>
               </Field>
               <Field label={t("Average km driven per rental day", "Genomsnittlig körsträcka per hyresdag")}>
@@ -919,7 +920,7 @@ export function ListingWizard({
             </p>
             <p className="mt-1 text-xs text-text-muted">{t("Before platform fees, insurance fees, taxes, fuel costs and other expenses.", "Före plattformsavgifter, försäkringsavgifter, skatter, bränslekostnader och andra utgifter.")}</p>
             <div className="mx-auto mt-3 max-w-xs">
-              <input type="range" min={1} max={7} value={draft.expectedBookedDays} onChange={(e) => patch({ expectedBookedDays: Number(e.target.value) })} className="w-full accent-yellow" />
+              <RangeInput min={1} max={7} value={draft.expectedBookedDays} onChange={(e) => patch({ expectedBookedDays: Number(e.target.value) })} />
               <p className="mt-1 text-xs text-text-secondary">{draft.expectedBookedDays} {t(draft.expectedBookedDays === 1 ? "booked day" : "booked days", "bokade dagar")}</p>
             </div>
             <button type="button" onClick={() => setReviewExpanded((v) => !v)} className="mt-3 text-xs font-medium text-yellow hover:underline">

@@ -112,6 +112,30 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+/* Pre-hydration cover for the garage intro (set by the inline script in
+   page.tsx). Sits above the page but below the intro overlay (z-100), which
+   removes the attribute once its canvas is up. The delayed failsafe animation
+   reveals the page even if hydration never completes. */
+html[data-intro] {
+  overflow: hidden;
+}
+
+html[data-intro]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: #08090a;
+  animation: intro-failsafe 0.6s ease 8s both;
+}
+
+@keyframes intro-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 /* Theme switch: the toggle runs a circular reveal through the View Transition
    API. The default cross-fade is disabled so the WAAPI clip-path animation
    (see ThemeProvider) is the only motion. */
@@ -194,6 +218,65 @@ html.light .theme-icon-rays {
   outline: 2px solid var(--color-yellow);
   outline-offset: 2px;
   border-radius: 2px;
+}
+
+/* Brand-styled range slider: yellow thumb and filled portion on a themed
+   track. Replaces native styling because Safari ignores accent-color on
+   range inputs. --range-fill (set inline by RangeInput) is the filled
+   percentage; WebKit has no ::-moz-range-progress equivalent, so the fill is
+   painted as a partial-width gradient layer on the track. */
+input[type="range"].themed-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.themed-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--color-yellow), var(--color-yellow)) 0 0 / var(--range-fill, 100%) 100% no-repeat,
+    color-mix(in oklab, var(--color-ink) 14%, transparent);
+}
+
+.themed-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -5px;
+  height: 16px;
+  width: 16px;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-yellow);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease;
+}
+
+.themed-range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.themed-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-ink) 14%, transparent);
+}
+
+.themed-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-yellow);
+}
+
+.themed-range::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-yellow);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
 
 .themed-scrollbar::-webkit-scrollbar {

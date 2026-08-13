@@ -20,6 +20,7 @@ export const brand = {
   slogan: "Din nästa resa, redo i närheten.",
   socialTagline: "Färre stillastående fordon. Mer delad frihet.",
   waitlistCta: "Gå med i väntelistan",
+  appCta: "Öppna appen",
 } as const;
 
 export const navLinks: NavLink[] = [

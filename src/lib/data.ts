@@ -7,6 +7,7 @@ export const brand = {
   slogan: "Ready when you are. Nearby when you need it.",
   socialTagline: "Less idle vehicles. More shared freedom.",
   waitlistCta: "Join the waitlist",
+  appCta: "Open the app",
 } as const;
 
 export type NavLink = {

@@ -53,6 +53,7 @@ import type { MapVehicle } from "./RealMap";
 import { useLanguage, type Lang } from "@/lib/i18n";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { RangeInput } from "@/components/ui/RangeInput";
 
 const RealMap = dynamic(() => import("./RealMap"), {
   ssr: false,
@@ -145,7 +146,7 @@ function DocPhotoRow({ label, photos }: { label: string; photos?: string[] }) {
     <div>
       <p className="text-xs font-medium text-text-secondary">{label}</p>
       {photos && photos.length > 0 ? (
-        <div className="mt-1.5 flex gap-2 overflow-x-auto pb-1">
+        <div className="themed-scrollbar mt-1.5 flex gap-2 overflow-x-auto pb-1">
           {photos.map((p, i) => (
             // eslint-disable-next-line @next/next/no-img-element -- local data: URL photos
             <img key={i} src={p} alt="" className="h-20 w-28 shrink-0 rounded-lg border border-ink/10 object-cover" />
@@ -1403,16 +1404,16 @@ function ExploreView({
           <div className="grid grid-cols-2 gap-3">
             <label className="flex items-center gap-2 rounded-xl border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5">
               <Icon name="calendar" className="h-4 w-4 text-text-muted" />
-              <input type="date" value={searchDates.start} onChange={(e) => setSearchDates((s) => ({ ...s, start: e.target.value }))} className="w-full bg-transparent text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
+              <input type="date" value={searchDates.start} onChange={(e) => setSearchDates((s) => ({ ...s, start: e.target.value }))} className="w-full bg-transparent text-sm text-text-primary focus:outline-none" />
             </label>
             <label className="flex items-center gap-2 rounded-xl border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5">
               <Icon name="calendar" className="h-4 w-4 text-text-muted" />
-              <input type="date" value={searchDates.end} onChange={(e) => setSearchDates((s) => ({ ...s, end: e.target.value }))} className="w-full bg-transparent text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
+              <input type="date" value={searchDates.end} onChange={(e) => setSearchDates((s) => ({ ...s, end: e.target.value }))} className="w-full bg-transparent text-sm text-text-primary focus:outline-none" />
             </label>
           </div>
         </div>
 
-        <div className="mt-3 flex items-center gap-2 overflow-x-auto pb-1">
+        <div className="themed-scrollbar mt-3 flex items-center gap-2 overflow-x-auto pb-1">
           <Chip active={filters.types.includes("Bil")} onClick={() => toggleType("Bil")}>{typeLabel("Bil", lang)}</Chip>
           <Chip active={filters.types.includes("Transportbil")} onClick={() => toggleType("Transportbil")}>{typeLabel("Transportbil", lang)}</Chip>
           <Chip active={filters.types.includes("Motorcykel")} onClick={() => toggleType("Motorcykel")}>{typeLabel("Motorcykel", lang)}</Chip>
@@ -1435,31 +1436,26 @@ function ExploreView({
           <div className="mt-3 grid gap-4 rounded-xl border border-ink/10 bg-ink/[0.02] p-4 sm:grid-cols-3">
             <div>
               <p className="mb-1.5 text-xs text-text-muted">{t("Price per day, max", "Pris per dag, max")} {Number.isFinite(filters.maxPrice) ? formatSEK(filters.maxPrice) : t("any", "alla")}</p>
-              <input
-                type="range"
+              <RangeInput
                 min={200}
                 max={2000}
                 step={50}
                 value={Number.isFinite(filters.maxPrice) ? filters.maxPrice : 2000}
                 onChange={(e) => setFilters((f) => ({ ...f, maxPrice: Number(e.target.value) >= 2000 ? Infinity : Number(e.target.value) }))}
-                className="w-full accent-yellow"
               />
             </div>
             <div>
               <p className="mb-1.5 text-xs text-text-muted">{t("Distance, max", "Avstånd, max")} {Number.isFinite(filters.maxDistance) ? `${filters.maxDistance} km` : t("any", "alla")}</p>
-              <input
-                type="range"
+              <RangeInput
                 min={1}
                 max={50}
-                step={1}
                 value={Number.isFinite(filters.maxDistance) ? filters.maxDistance : 50}
                 onChange={(e) => setFilters((f) => ({ ...f, maxDistance: Number(e.target.value) }))}
-                className="w-full accent-yellow"
               />
             </div>
             <div>
               <p className="mb-1.5 text-xs text-text-muted">{t("Number of seats, minimum", "Antal säten, minst")}</p>
-              <select value={filters.minSeats} onChange={(e) => setFilters((f) => ({ ...f, minSeats: Number(e.target.value) }))} className="w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2 text-sm text-text-primary focus:outline-none [color-scheme:dark]">
+              <select value={filters.minSeats} onChange={(e) => setFilters((f) => ({ ...f, minSeats: Number(e.target.value) }))} className="w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2 text-sm text-text-primary focus:outline-none">
                 <option value={0}>{t("All", "Alla")}</option>
                 <option value={2}>2+</option>
                 <option value={4}>4+</option>
@@ -1541,7 +1537,7 @@ function VehicleDetailView({
               {/* eslint-disable-next-line @next/next/no-img-element -- local data: URL photos */}
               <img src={photos[activePhoto]} alt="" className="h-72 w-full rounded-2xl border border-ink/10 object-cover" />
               {photos.length > 1 && (
-                <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+                <div className="themed-scrollbar mt-2 flex gap-2 overflow-x-auto pb-1">
                   {photos.map((p, i) => (
                     <button
                       key={i}
@@ -1823,16 +1819,16 @@ function BookingFlow({
           <h2 className="text-base font-semibold text-text-primary">{t("Choose date and time", "Välj datum och tid")}</h2>
           <div className="grid grid-cols-2 gap-3">
             <label className="text-xs text-text-muted">{t("Start date", "Startdatum")}
-              <input type="date" min={todayISO()} value={draft.startDate} onChange={(e) => patch({ startDate: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
+              <input type="date" min={todayISO()} value={draft.startDate} onChange={(e) => patch({ startDate: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
             </label>
             <label className="text-xs text-text-muted">{t("End date", "Slutdatum")}
-              <input type="date" min={draft.startDate || todayISO()} value={draft.endDate} onChange={(e) => patch({ endDate: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
+              <input type="date" min={draft.startDate || todayISO()} value={draft.endDate} onChange={(e) => patch({ endDate: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
             </label>
             <label className="text-xs text-text-muted">{t("Pickup time", "Upphämtningstid")}
-              <input type="time" value={draft.pickupTime} onChange={(e) => patch({ pickupTime: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
+              <input type="time" value={draft.pickupTime} onChange={(e) => patch({ pickupTime: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
             </label>
             <label className="text-xs text-text-muted">{t("Return time", "Återlämningstid")}
-              <input type="time" value={draft.returnTime} onChange={(e) => patch({ returnTime: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none [color-scheme:dark]" />
+              <input type="time" value={draft.returnTime} onChange={(e) => patch({ returnTime: e.target.value })} className="mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-sm text-text-primary focus:outline-none" />
             </label>
           </div>
           <p className="text-sm text-text-secondary">{nights} {t(nights === 1 ? "night selected" : "nights selected", "dygn valda")}</p>
