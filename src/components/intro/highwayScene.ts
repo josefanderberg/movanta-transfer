@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+import { buildXC60Geometry } from "./xc60Geometry";
+import { applyXC60Materials } from "./xc60Materials";
 
 /**
  * Cinematic landing intro: a blue-hour cruise down a mountain motorway.
@@ -583,14 +585,18 @@ export function startHighwayIntro(canvas: HTMLCanvasElement, onDone: () => void)
   gantry.add(signBack);
   addMover(gantry, -68, 460, TILE * TILES);
 
-  // ---------- car mount ----------
-  // TODO(car): the CAD-based car model (being sourced in the separate
-  // session) attaches to this group. Conventions: nose toward -z, wheels
-  // resting on y=0, positioned in the cruising lane. The chase camera already
-  // frames this spot, and headlights/wheel-roll should be driven from here.
+  // ---------- car ----------
+  // Volvo XC60 built by the agent pipeline (architect → CAD → shading):
+  // nose toward -z, wheels resting on y=0, cruising-lane center. The world
+  // treadmills past it, so the car itself stays at z=0 and only the wheels
+  // spin; headlights/taillights ramp with the street lights.
   const carMount = new THREE.Group();
   carMount.position.set(LANE_OUT, 0, 0);
   scene.add(carMount);
+  const car = buildXC60Geometry();
+  const carDress = applyXC60Materials(car);
+  carMount.add(car.group);
+  const WHEEL_RADIUS = 0.37;
 
   // ---------- timeline ----------
   let raf = 0;
@@ -624,10 +630,15 @@ export function startHighwayIntro(canvas: HTMLCanvasElement, onDone: () => void)
     }
     asphaltTex.offset.y += dz / 22.5; // one texture repeat = 22.5 m of road
 
-    // Street lights fade in as the blue hour deepens.
+    // Wheels roll to match the treadmill speed (contact patch moves +z).
+    for (const w of car.wheels) w.rotation.x -= dz / WHEEL_RADIUS;
+    carDress.update(dt);
+
+    // Street lights fade in as the blue hour deepens; the car lights up with them.
     const lampsOn = seg(t, 0.2, 1.1);
     lampHeadMat.emissiveIntensity = lampsOn * 2.6;
     poolMat.opacity = lampsOn * 0.2;
+    carDress.setLightsOn(seg(t, 0.35, 1.3));
 
     // Camera: crane down from a high reveal of the valley into a low chase
     // position behind the (future) car, with a gentle highway sway.
@@ -677,6 +688,7 @@ export function startHighwayIntro(canvas: HTMLCanvasElement, onDone: () => void)
     disposed = true;
     cancelAnimationFrame(raf);
     window.removeEventListener("resize", onResize);
+    carDress.dispose();
     scene.traverse((obj) => {
       if (obj instanceof THREE.Mesh || obj instanceof THREE.Sprite || obj instanceof THREE.Points) {
         obj.geometry?.dispose();
